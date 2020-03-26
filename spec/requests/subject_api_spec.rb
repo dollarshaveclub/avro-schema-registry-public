@@ -152,8 +152,9 @@ describe SubjectAPI do
       let(:schema) { version.schema }
       let(:expected) do
         {
-          name: subject_name,
+          subject: subject_name,
           version: version.version,
+          id: version.schema.id,
           schema: schema.json
         }.to_json
       end
