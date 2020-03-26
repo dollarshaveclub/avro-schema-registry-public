@@ -12,6 +12,7 @@ gem 'pg'
 gem 'private_attr', require: 'private_attr/everywhere'
 gem 'puma', '>= 5.6.7'
 gem 'rails', '~> 7.0.0'
+gem 'avro_turf', '>= 0.8.0', require: false
 
 group :test do
   gem 'json_spec'
@@ -27,7 +28,6 @@ end
 
 group :development do
   gem 'annotate'
-  gem 'avro_turf', '>= 0.8.0', require: false
   gem 'heroku_rails_deploy', '>= 0.4.1', require: false
   gem 'overcommit'
 end
