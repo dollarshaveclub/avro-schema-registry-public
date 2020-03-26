@@ -155,6 +155,7 @@ describe SubjectAPI do
         {
           id: version.schema_id,
           name: subject_name,
+          subject: subject_name,
           version: version.version,
           schema: schema.json
         }.to_json
