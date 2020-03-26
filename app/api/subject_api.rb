@@ -50,8 +50,9 @@ class SubjectAPI < Grape::API
       get do
         with_schema_version(params[:name], params[:version_id]) do |schema_version|
           {
-            name: schema_version.subject.name,
+            subject: schema_version.subject.name,
             version: schema_version.version,
+            id: schema_version.schema_id,
             schema: schema_version.schema.json
           }
         end
