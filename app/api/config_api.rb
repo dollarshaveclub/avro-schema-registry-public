@@ -7,7 +7,8 @@ class ConfigAPI < Grape::API
     invalid_compatibility_level!
   end
 
-  rescue_from :all do
+  rescue_from :all do |e|
+    Rollbar.error(e) if defined?(Rollbar) && Rails.env.production?
     server_error!
   end
 

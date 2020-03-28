@@ -17,7 +17,8 @@ class SubjectAPI < Grape::API
     incompatible_avro_schema!
   end
 
-  rescue_from :all do
+  rescue_from :all do |e|
+    Rollbar.error(e) if defined?(Rollbar) && Rails.env.production?
     server_error!
   end
 
