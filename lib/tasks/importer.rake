@@ -1,5 +1,5 @@
 desc 'Import schemas from another registry, preserving IDs, subjects, and versions'
-task import_schemas: [:environment] do
+task import_schemas: :environment do
   raise 'REGISTRY_URL must be specified' unless ENV['REGISTRY_URL']
   require 'avro_turf'
   require 'avro_turf/confluent_schema_registry'
@@ -7,6 +7,8 @@ task import_schemas: [:environment] do
   # Monkey-patch Schema model to allow for storing schemas that were
   # accepted by the Confluent schema registry, but cannot be parsed
   # with the Ruby version of the Avro library.
+  require File.expand_path(File.dirname(__FILE__) + "/../../config/environment")
+  Schema # Touch this so it autoloads before we patch it.
   class Schema
     private
     def generate_fingerprints
