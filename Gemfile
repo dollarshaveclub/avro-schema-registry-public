@@ -25,6 +25,7 @@ group :test do
 end
 
 group :production do
+  gem 'rollbar'
   gem 'bugsnag'
 end
 
