@@ -26,6 +26,7 @@ end
 
 group :production do
   gem 'bugsnag'
+  gem 'ddtrace'
 end
 
 group :development do
