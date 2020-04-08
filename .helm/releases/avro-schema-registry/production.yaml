@@ -1,0 +1,23 @@
+replicaCount: 2 # final value TBD
+
+image:
+  pullSecrets: dollarshaveclub-kubernetes-pull-secret
+
+ingress:
+  enabled: true
+  hosts:
+    - avro-schema-registry-origin.kube.shave.io # TBD
+  annotations:
+    kubernetes.io/ingress.class: fastly-production # TBD
+
+app:
+  env: production
+  railsEnv: production
+  fingerprintVersion: 2
+  disableSchemaRegistration: true
+  statsdHost: datadog.tools.svc.cluster.local.
+  vaultAddr: http://vault.shave.io:8200
+  vaultRole: avro-schema-registry-production
+  vaultK8sAuthUrlPrefix: kube.shave.io
+  vaultTokenPath: /var/run/secrets/kubernetes.io/serviceaccount/token
+  vaultPathPrefix: secret/services/avro-schema-registry/production/

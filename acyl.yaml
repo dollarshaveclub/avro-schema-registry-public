@@ -1,0 +1,31 @@
+version: 2
+
+target_branches:
+  - master
+
+application:
+  chart_path: '.helm/charts/avro-schema-registry'
+  chart_vars_path: '.helm/releases/avro-schema-registry/dqa.yaml'
+  image: 'quay.io/dollarshaveclub/avro-schema-registry'
+
+dependencies:
+  direct:
+    - name: postgres
+      chart_path: '.helm/charts/postgres'
+      chart_vars_path: '.helm/releases/postgres/dqa.yaml'
+  environment:
+
+notifications:
+  github:
+    commit_statuses:
+      templates:
+        success:
+          description: "The Acyl environment {{ .EnvName }} was created successfully."
+          target_url: "https://{{ .EnvName }}.dqa.wtf"
+  templates:
+    success:
+      title: "🏁 Environment Ready"
+      sections:
+        - title: "{{ .EnvName }}"
+          text: "{{ .Repo }}\nPR #{{ .PullRequest }}: {{ .SourceBranch }} ➡️ {{ .BaseBranch }}\nhttps://{{ .EnvName }}.dqa.wtf\nK8s Namespace: {{ .K8sNamespace }}"
+          style: "good"
