@@ -1,0 +1,33 @@
+replicaCount: 1
+
+image:
+  repository: postgres
+  tag: 9.6
+  imagePullPolicy: Always
+
+service:
+  name: postgres
+  type: ClusterIP
+  externalPort: 5432
+  internalPort: 5432
+
+app:
+  postgresUser: avro
+  postgresPassword: avro
+  postgresDb: avro-postgres
+
+livenessProbe:
+  initialDelaySeconds: 10
+  timeoutSeconds: 5
+  periodSeconds: 10
+  tcpSocket:
+    port: 5432
+
+readinessProbe:
+  initialDelaySeconds: 10
+  timeoutSeconds: 5
+  periodSeconds: 10
+  tcpSocket:
+    port: 5432
+
+resources: {}
