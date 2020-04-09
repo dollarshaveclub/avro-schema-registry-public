@@ -39,12 +39,34 @@ spec:
               value: {{ .Values.app.railsLogToStdOut | quote }}
             - name: PORT
               value: {{ .Values.service.externalPort | quote }}
-            - name: FINGERPRINT_VERSION
-              value: {{ .Values.app.fingerprintVersion | quote }}
-{{- if .Values.app.disableSchemaRegistration }}
-            - name: DISABLE_SCHEMA_REGISTRATION
-              value: {{ .Values.app.disableSchemaRegistration | quote }}
-{{- end }}
+            - name: DATABASE_URL
+              value: {{ .Values.app.dbURL | quote }}
+            - name: DB_POOL
+              value: {{ .Values.app.dbPool | quote }}
+            - name: WEB_WORKER_PROCESSES
+              value: {{ .Values.app.webWorkerProcesses | quote }}
+            - name: MAX_WEB_THREADS
+              value: {{ .Values.app.maxWebThreads | quote }}
+            - name: RAILS_SERVE_STATIC_FILES
+              value: {{ .Values.app.railsServeStaticFiles | quote }}
+            - name: ALLOW_RESPONSE_CACHING
+              value: {{ .Values.app.allowResponseCaching | quote }}
+            - name: FORCE_SSL
+              value: {{ .Values.app.forceSSL | quote }}
+            - name: DEFAULT_COMPATIBILITY
+              value: {{ .Values.app.defaultCompatibility | quote }}
+            - name: SECRET_KEY_BASE
+              value: {{ .Values.app.secretKeyBase | quote }}
+            - name: DISABLE_PASSWORD
+              value: {{ .Values.app.disablePWD | quote }}
+            - name: ROLLBAR_ACCESS_TOKEN
+              value: {{ .Values.app.rollbarAccessToken | quote }}
+            - name: DATADOG_APM_SERVICE_NAME
+              value: {{ .Values.app.ddAPMServiceName | quote }}
+            - name: DD_TRACE_ANALYTICS_ENABLED
+              value: {{ .Values.app.ddTraceAnalyticsEnabled | quote }}
+            - name: DD_ENV
+              value: {{ .Values.app.env | quote }}
           livenessProbe:
             initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
             timeoutSeconds: {{  .Values.livenessProbe.timeoutSeconds }}

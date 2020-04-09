@@ -16,8 +16,8 @@ fullnameOverride: ""
 service:
   name: avro-schema-registry
   type: ClusterIP
-  externalPort: 5000
-  internalPort: 5000
+  externalPort: 8081
+  internalPort: 8081
 
 ingress:
   enabled: false
@@ -43,13 +43,24 @@ app:
   env: development
   railsEnv: development
   railsLogToStdOut: true
-  fingerprintVersion: all
-  disableSchemaRegistration: false
+  dbURL: postgresql://root:root@postgres:5432/avro
+  dbPool: 25
+  forceSSL: false
+  secretKeyBase: ''
+  disablePWD: true
+  railsServeStaticFiles: true
+  allowResponseCaching: true
+  defaultCompatibility: BACKWARD
+  webWorkerProcesses: 4
+  maxWebThreads: 25
   vaultAddr: http://vault:8200
   vaultRole: ''
   vaultK8sAuthUrlPrefix: kubernetes
   vaultTokenPath: /var/run/secrets/kubernetes.io/serviceaccount/token
   vaultPathPrefix: secret/services/avro-schema-registry/
+  rollbarAccessToken: ''
+  ddAPMServiceName: avro-schema-registry
+  ddTraceAnalyticsEnabled: false
 
 livenessProbe:
   initialDelaySeconds: 300
