@@ -67,6 +67,28 @@ spec:
               value: {{ .Values.app.ddTraceAnalyticsEnabled | quote }}
             - name: DD_ENV
               value: {{ .Values.app.env | quote }}
+{{- if .Values.app.common.statsdHost }}
+            - name: STATSD_HOST
+              value: {{ .Values.app.statsdHost | quote }}
+            - name: STATSD_PORT
+              value: {{ .Values.app.statsdPort | quote }}
+{{- end }}
+            - name: VAULT_ADDR
+              value: {{ .Values.app.common.vaultAddr | quote }}
+            - name: VAULT_PATH_PREFIX
+              value: {{ .Values.app.common.vaultPathPrefix | quote }}
+{{- if .Values.app.common.role }}
+            - name: VAULT_ROLE
+              value: {{ .Values.app.common.role | quote }}
+{{- end }}
+{{- if .Values.app.common.vaultToken }}
+            - name: VAULT_TOKEN
+              value: {{ .Values.app.common.vaultToken | quote }}
+{{- end }}
+{{- if .Values.app.common.vaultK8sAuthUrlPrefix }}
+            - name: VAULT_K8S_AUTH_URL_PREFIX
+              value: {{ .Values.app.common.vaultK8sAuthUrlPrefix | quote }}
+{{- end }}
           livenessProbe:
             initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
             timeoutSeconds: {{  .Values.livenessProbe.timeoutSeconds }}

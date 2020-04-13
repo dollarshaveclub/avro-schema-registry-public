@@ -1,0 +1,22 @@
+replicaCount: 1
+
+image:
+  repository: quay.io/dollarshaveclub/avro-schema-registry
+  tag: master
+  pullPolicy: Always
+  pullSecrets: quay-key
+
+restartPolicy: OnFailure
+
+dnsPolicy: ClusterFirst
+
+app:
+  env: development
+  railsEnv: development
+  statsdHost: ''
+  statsdPort: 8125
+  railsLogToStdOut: true
+  dbURL: postgresql://root:root@postgres:5432/avro
+
+job:
+  activeDeadlineSeconds: 600

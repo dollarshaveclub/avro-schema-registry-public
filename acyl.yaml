@@ -13,6 +13,11 @@ dependencies:
     - name: postgres
       chart_path: '.helm/charts/postgres'
       chart_vars_path: '.helm/releases/postgres/dqa.yaml'
+    - name: avro-schema-registry-db-migration
+      chart_path: '.helm/charts/avro-schema-registry-db-migration'
+      chart_vars_path: '.helm/releases/avro-schema-registry-db-migration/dqa.yaml'
+      requires:
+        - postgres
   environment:
 
 notifications:

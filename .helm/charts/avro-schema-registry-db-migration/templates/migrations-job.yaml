@@ -1,0 +1,51 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ template "fullname" . }}-{{ randAlphaNum 5 | lower }}
+  labels:
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+spec:
+  activeDeadlineSeconds: {{ .Values.job.activeDeadlineSeconds }}
+  template:
+    metadata:
+      name:  {{ template "fullname" . }}-migrations
+      labels:
+        chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    spec:
+      restartPolicy: {{ .Values.restartPolicy }}
+      imagePullSecrets:
+        - name: {{ .Values.image.pullSecrets | quote }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args: ["bundle", "exec", "rake", "db:migrate"]
+          env:
+            - name: RAILS_ENV
+              value: {{ .Values.app.railsEnv | quote }}
+            - name: RAILS_LOG_TO_STDOUT
+              value: {{ .Values.app.railsLogToStdOut | quote }}
+            - name: DATABASE_URL
+              value: {{ .Values.app.dbURL | quote }}
+{{- if .Values.app.common.statsdHost }}
+            - name: STATSD_HOST
+              value: {{ .Values.app.common.statsdHost | quote }}
+            - name: STATSD_PORT
+              value: {{ .Values.app.common.statsdPort | quote }}
+{{- end }}
+            - name: VAULT_ADDR
+              value: {{ .Values.app.common.vaultAddr | quote }}
+            - name: VAULT_PATH_PREFIX
+              value: {{ .Values.app.common.vaultPathPrefix | quote }}
+{{- if .Values.app.common.role }}
+            - name: VAULT_ROLE
+              value: {{ .Values.app.common.role | quote }}
+{{- end }}
+{{- if .Values.app.common.vaultToken }}
+            - name: VAULT_TOKEN
+              value: {{ .Values.app.common.vaultToken | quote }}
+{{- end }}
+{{- if .Values.app.common.vaultK8sAuthUrlPrefix }}
+            - name: VAULT_K8S_AUTH_URL_PREFIX
+              value: {{ .Values.app.common.vaultK8sAuthUrlPrefix | quote }}
+{{- end }}
