@@ -1,0 +1,11 @@
+image:
+  pullSecrets: image-pull-secret
+
+app:
+  env: qa
+  railsEnv: qa
+  statsdHost: datadog.tools.svc.cluster.local.
+  vaultAddr: http://vault.shave.io:8200
+  vaultRole: avro-schema-registry-dqa
+  vaultK8sAuthUrlPrefix: kube.shave.io
+  vaultPathPrefix: secret/services/avro-schema-registry/dqa/

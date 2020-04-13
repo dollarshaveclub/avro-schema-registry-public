@@ -42,6 +42,8 @@ dnsConfig: {}
 app:
   env: development
   railsEnv: development
+  statsdHost: ''
+  statsdPort: 8125
   railsLogToStdOut: true
   dbURL: postgresql://root:root@postgres:5432/avro
   dbPool: 25
