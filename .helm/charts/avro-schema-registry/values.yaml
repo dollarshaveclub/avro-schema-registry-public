@@ -42,10 +42,10 @@ dnsConfig: {}
 app:
   env: development
   railsEnv: development
-  statsdHost: ''
+  statsdHost: datadog.tools.svc.cluster.local.
   statsdPort: 8125
   railsLogToStdOut: true
-  dbURL: postgresql://root:root@postgres:5432/avro
+  dbURL: postgresql://root:root@postgres:5432/avro-schema-registry_development
   dbPool: 25
   forceSSL: false
   secretKeyBase: ''

@@ -24,15 +24,15 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
-          - containerPort: {{ .Values.service.internalPort }}
-            protocol: "TCP"
+            - containerPort: {{ .Values.service.internalPort }}
+              protocol: "TCP"
           env:
-          - name: POSTGRES_USER
-            value: {{ .Values.app.postgresUser | quote }}
-          - name: POSTGRES_PASSWORD
-            value: {{ .Values.app.postgresPassword | quote }}
-          - name: POSTGRES_DB
-            value: {{ .Values.app.postgresDb | quote }}
+            - name: POSTGRES_DB
+              value: {{ .Values.service.name | quote }}
+            - name: POSTGRES_USER
+              value: {{ .Values.app.dbUser | quote }}
+            - name: POSTGRES_PASSWORD
+              value: {{ .Values.app.dbPassword | quote }}
           livenessProbe:
             tcpSocket:
               port: {{ .Values.service.internalPort }}

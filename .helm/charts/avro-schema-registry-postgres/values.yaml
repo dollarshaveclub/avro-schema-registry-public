@@ -12,9 +12,9 @@ service:
   internalPort: 5432
 
 app:
-  postgresUser: root
-  postgresPassword: root
-  postgresDb: avro
+
+  dbUser: root
+  dbPassword: root
 
 livenessProbe:
   initialDelaySeconds: 10

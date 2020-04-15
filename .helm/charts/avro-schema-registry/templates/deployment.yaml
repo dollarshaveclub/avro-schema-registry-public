@@ -39,8 +39,19 @@ spec:
               value: {{ .Values.app.railsLogToStdOut | quote }}
             - name: PORT
               value: {{ .Values.service.externalPort | quote }}
+{{- if .Values.app.dbURL }}
             - name: DATABASE_URL
               value: {{ .Values.app.dbURL | quote }}
+{{- else }}
+            - name: DB_USER
+              value: {{ .Values.app.dbUser | quote }}
+            - name: DB_PASSWORD
+              value: {{ .Values.app.dbPassword | quote }}
+            - name: DB_HOST
+              value: {{ .Values.app.dbHost | quote }}
+            - name: DB_PORT
+              value: {{ .Values.app.dbPort | quote }}
+{{- end }}
             - name: DB_POOL
               value: {{ .Values.app.dbPool | quote }}
             - name: WEB_WORKER_PROCESSES
@@ -67,27 +78,27 @@ spec:
               value: {{ .Values.app.ddTraceAnalyticsEnabled | quote }}
             - name: DD_ENV
               value: {{ .Values.app.env | quote }}
-{{- if .Values.app.common.statsdHost }}
+{{- if .Values.app.statsdHost }}
             - name: STATSD_HOST
               value: {{ .Values.app.statsdHost | quote }}
             - name: STATSD_PORT
               value: {{ .Values.app.statsdPort | quote }}
 {{- end }}
             - name: VAULT_ADDR
-              value: {{ .Values.app.common.vaultAddr | quote }}
+              value: {{ .Values.app.vaultAddr | quote }}
             - name: VAULT_PATH_PREFIX
-              value: {{ .Values.app.common.vaultPathPrefix | quote }}
-{{- if .Values.app.common.role }}
+              value: {{ .Values.app.vaultPathPrefix | quote }}
+{{- if .Values.app.vaultRole }}
             - name: VAULT_ROLE
-              value: {{ .Values.app.common.role | quote }}
+              value: {{ .Values.app.vaultRole | quote }}
 {{- end }}
-{{- if .Values.app.common.vaultToken }}
+{{- if .Values.app.vaultToken }}
             - name: VAULT_TOKEN
-              value: {{ .Values.app.common.vaultToken | quote }}
+              value: {{ .Values.app.vaultToken | quote }}
 {{- end }}
-{{- if .Values.app.common.vaultK8sAuthUrlPrefix }}
+{{- if .Values.app.vaultK8sAuthUrlPrefix }}
             - name: VAULT_K8S_AUTH_URL_PREFIX
-              value: {{ .Values.app.common.vaultK8sAuthUrlPrefix | quote }}
+              value: {{ .Values.app.vaultK8sAuthUrlPrefix | quote }}
 {{- end }}
           livenessProbe:
             initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
