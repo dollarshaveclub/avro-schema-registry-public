@@ -2,9 +2,9 @@ replicaCount: 1
 
 image:
   repository: quay.io/dollarshaveclub/avro-schema-registry
-  tag: master
-  pullPolicy: Always
-  pullSecrets: quay-key
+  tag: helm-charts
+  pullPolicy: IfNotPresent
+  pullSecrets: image-pull-secret
 
 restartPolicy: OnFailure
 
@@ -16,7 +16,11 @@ app:
   statsdHost: ''
   statsdPort: 8125
   railsLogToStdOut: true
-  dbURL: postgresql://root:root@postgres:5432/avro
+  dbURL: postgresql://root:root@postgres:5432/avro-schema-registry_development
+  dbUser: root
+  dbPassword: root
+  dbHost: postgres
+  dbPort: 5432
 
 job:
   activeDeadlineSeconds: 600
