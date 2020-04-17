@@ -4,15 +4,14 @@ image:
   pullSecrets: dollarshaveclub-kubernetes-pull-secret
 
 ingress:
-  enabled: true
+  enabled: false # TBD
   hosts:
-    - avro-schema-registry-origin.kube.shave.io # TBD
+    - avro-schema-registry.shave.io # TBD
   annotations:
     kubernetes.io/ingress.class: fastly-production # TBD
 
 app:
   env: production
-  railsEnv: production
   fingerprintVersion: 2
   disableSchemaRegistration: true
   statsdHost: datadog.tools.svc.cluster.local.
@@ -22,3 +21,4 @@ app:
   vaultTokenPath: /var/run/secrets/kubernetes.io/serviceaccount/token
   vaultPathPrefix: secret/services/avro-schema-registry/production/
   rollbarAccessToken: d8034ca2eef844e0a1df3fc1927b2a83
+  ddTraceAnalyticsEnabled: true

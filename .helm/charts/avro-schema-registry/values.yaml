@@ -8,7 +8,7 @@ image:
   repository: quay.io/dollarshaveclub/avro-schema-registry
   tag: master
   pullPolicy: Always
-  pullSecrets: quay-key
+  pullSecrets: image-pull-secret
 
 nameOverride: ""
 fullnameOverride: ""
@@ -41,14 +41,14 @@ dnsConfig: {}
 
 app:
   env: development
-  railsEnv: development
+  railsEnv: production # use production for all environments
   statsdHost: datadog.tools.svc.cluster.local.
   statsdPort: 8125
   railsLogToStdOut: true
   dbURL: postgresql://root:root@postgres:5432/avro-schema-registry_development
   dbPool: 25
   forceSSL: false
-  secretKeyBase: ''
+  secretKeyBase: ac4e76bc1a5fdd3ab0d19dd205029da31adebed83df2fc01
   disablePWD: true
   railsServeStaticFiles: true
   allowResponseCaching: true

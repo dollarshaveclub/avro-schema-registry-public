@@ -6,7 +6,7 @@ dqaIngress:
 
 app:
   env: qa
-  railsEnv: qa
+  dbURL: postgresql://root:root@avro-schema-registry-postgres:5432/avro-schema-registry_test
   statsdHost: datadog.tools.svc.cluster.local.
   vaultAddr: http://vault.shave.io:8200
   vaultRole: avro-schema-registry-dqa

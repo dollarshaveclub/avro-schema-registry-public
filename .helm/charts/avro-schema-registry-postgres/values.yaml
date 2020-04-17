@@ -12,7 +12,6 @@ service:
   internalPort: 5432
 
 app:
-
   dbUser: root
   dbPassword: root
 

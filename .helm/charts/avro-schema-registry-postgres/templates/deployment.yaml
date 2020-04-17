@@ -27,8 +27,6 @@ spec:
             - containerPort: {{ .Values.service.internalPort }}
               protocol: "TCP"
           env:
-            - name: POSTGRES_DB
-              value: {{ .Values.service.name | quote }}
             - name: POSTGRES_USER
               value: {{ .Values.app.dbUser | quote }}
             - name: POSTGRES_PASSWORD
