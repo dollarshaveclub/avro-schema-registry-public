@@ -32,25 +32,18 @@ spec:
               protocol: TCP
           env:
             - name: RACK_ENV
-              value: {{ .Values.app.env | quote }}
+              value: {{ .Values.app.railsEnv | quote }}
             - name: RAILS_ENV
               value: {{ .Values.app.railsEnv | quote }}
             - name: RAILS_LOG_TO_STDOUT
               value: {{ .Values.app.railsLogToStdOut | quote }}
             - name: PORT
               value: {{ .Values.service.externalPort | quote }}
-{{- if .Values.app.dbURL }}
             - name: DATABASE_URL
-              value: {{ .Values.app.dbURL | quote }}
+{{- if eq .Values.app.env "production" }}
+              value: {{ .Values.app.dbURL | quote }} # configure to pull from vault or supplied by vault sidecar
 {{- else }}
-            - name: DB_USER
-              value: {{ .Values.app.dbUser | quote }}
-            - name: DB_PASSWORD
-              value: {{ .Values.app.dbPassword | quote }}
-            - name: DB_HOST
-              value: {{ .Values.app.dbHost | quote }}
-            - name: DB_PORT
-              value: {{ .Values.app.dbPort | quote }}
+              value: {{ .Values.app.dbURL | quote }}
 {{- end }}
             - name: DB_POOL
               value: {{ .Values.app.dbPool | quote }}
@@ -67,17 +60,25 @@ spec:
             - name: DEFAULT_COMPATIBILITY
               value: {{ .Values.app.defaultCompatibility | quote }}
             - name: SECRET_KEY_BASE
+{{- if eq .Values.app.env "production" }}
+              value: {{ .Values.app.secretKeyBase | quote }} # configure to pull from vault or supplied by vault sidecar
+{{- else }}
               value: {{ .Values.app.secretKeyBase | quote }}
+{{- end }}
             - name: DISABLE_PASSWORD
               value: {{ .Values.app.disablePWD | quote }}
+{{- if .Values.app.rollbarAccessToken }}
             - name: ROLLBAR_ACCESS_TOKEN
               value: {{ .Values.app.rollbarAccessToken | quote }}
-            - name: DATADOG_APM_SERVICE_NAME
-              value: {{ .Values.app.ddAPMServiceName | quote }}
+{{- end }}
             - name: DD_TRACE_ANALYTICS_ENABLED
               value: {{ .Values.app.ddTraceAnalyticsEnabled | quote }}
+{{- if .Values.app.ddTraceAnalyticsEnabled }}
+            - name: DATADOG_APM_SERVICE_NAME
+              value: {{ .Values.app.ddAPMServiceName | quote }}
             - name: DD_ENV
               value: {{ .Values.app.env | quote }}
+{{- end }}
 {{- if .Values.app.statsdHost }}
             - name: STATSD_HOST
               value: {{ .Values.app.statsdHost | quote }}

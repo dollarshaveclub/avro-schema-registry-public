@@ -11,16 +11,12 @@ restartPolicy: OnFailure
 dnsPolicy: ClusterFirst
 
 app:
-  env: development
-  railsEnv: development
+  railsEnv: production # use production for all environments
   statsdHost: ''
   statsdPort: 8125
   railsLogToStdOut: true
+  disablePWD: true
   dbURL: postgresql://root:root@postgres:5432/avro-schema-registry_development
-  dbUser: root
-  dbPassword: root
-  dbHost: postgres
-  dbPort: 5432
 
 job:
   activeDeadlineSeconds: 600

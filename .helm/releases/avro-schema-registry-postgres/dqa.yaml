@@ -1,2 +1,2 @@
-#image:
-#  pullSecrets: image-pull-secret
+service:
+  name: avro-schema-registry-postgres
