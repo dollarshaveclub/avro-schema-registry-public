@@ -3,15 +3,19 @@ replicaCount: 2 # final value TBD
 image:
   pullSecrets: dollarshaveclub-kubernetes-pull-secret
 
+#createServiceAccount: true
+
 ingress:
-  enabled: false # TBD
+  enabled: true # TBD
   hosts:
-    - avro-schema-registry.shave.io # TBD
+    - avro-schema-registry.aws.shave.io # TBD
   annotations:
-    kubernetes.io/ingress.class: fastly-production # TBD
+    ingress.kubernetes.io/force-ssl-redirect: "true"
+    kubernetes.io/ingress.class: internal-ingress
 
 app:
   env: production
+  secretName: avro-schema-registry-production
   fingerprintVersion: 2
   disableSchemaRegistration: true
   statsdHost: datadog.tools.svc.cluster.local.

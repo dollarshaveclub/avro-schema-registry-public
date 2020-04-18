@@ -2,8 +2,9 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: {{ template "fullname" . }}-{{ randAlphaNum 5 | lower }}
+  namespace: {{ .Release.Namespace }}
   labels:
-    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+{{ include "labels" . | indent 4 }}
 spec:
   activeDeadlineSeconds: {{ .Values.job.activeDeadlineSeconds }}
   template:
@@ -12,6 +13,7 @@ spec:
       labels:
         chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
     spec:
+      serviceAccountName: {{ .Values.app.vaultRole }}
       restartPolicy: {{ .Values.restartPolicy }}
       imagePullSecrets:
         - name: {{ .Values.image.pullSecrets | quote }}
@@ -31,6 +33,10 @@ spec:
               value: {{ .Values.app.disablePWD | quote }}
             - name: DATABASE_URL
               value: {{ .Values.app.dbURL | quote }}
+            - name: SECRET_KEY_BASE
+              value: {{ .Values.app.secretKeyBase | quote }}
+            - name: DISABLE_DATABASE_ENVIRONMENT_CHECK
+              value: "1" # necessary for DQA upgrades
 {{- if .Values.app.statsdHost }}
             - name: STATSD_HOST
               value: {{ .Values.app.statsdHost | quote }}

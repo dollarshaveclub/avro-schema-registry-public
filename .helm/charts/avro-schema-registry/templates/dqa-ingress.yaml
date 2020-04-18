@@ -11,7 +11,7 @@ spec:
   entryPoints:
     - web
   routes:
-    - match: HostRegexp(`{subdomain:([a-zA-Z0-9_-]+)?}{{ .Values.env_name }}.{{ .Values.dqaIngress.domain }}`)
+    - match: HostRegexp(`{{ $name }}-{{ .Values.env_name }}.{{ .Values.dqaIngress.domain }}`)
       kind: Rule
       services:
         - name: {{ $name }}
