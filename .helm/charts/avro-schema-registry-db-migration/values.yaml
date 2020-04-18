@@ -4,19 +4,24 @@ image:
   repository: quay.io/dollarshaveclub/avro-schema-registry
   tag: helm-charts
   pullPolicy: IfNotPresent
-  pullSecrets: image-pull-secret
+  pullSecrets: quay-key
 
 restartPolicy: OnFailure
 
 dnsPolicy: ClusterFirst
 
+createServiceAccount: false
+
 app:
+  env: development
+  secretName: ''
   railsEnv: production # use production for all environments
   statsdHost: ''
   statsdPort: 8125
   railsLogToStdOut: true
   disablePWD: true
   dbURL: postgresql://root:root@postgres:5432/avro-schema-registry_development
+  secretKeyBase: ac4e76bc1a5fdd3ab0d19dd205029da31adebed83df2fc01
 
 job:
   activeDeadlineSeconds: 600

@@ -18,6 +18,7 @@ spec:
         app: {{ template "name" . }}
         release: {{ .Release.Name }}
     spec:
+      serviceAccountName: {{ .Values.app.vaultRole }}
       dnsPolicy: {{ .Values.dnsPolicy }}
       dnsConfig:
 {{ toYaml .Values.dnsConfig | indent 8 }}
@@ -39,11 +40,22 @@ spec:
               value: {{ .Values.app.railsLogToStdOut | quote }}
             - name: PORT
               value: {{ .Values.service.externalPort | quote }}
+{{- if .Values.app.secretName }}
             - name: DATABASE_URL
-{{- if eq .Values.app.env "production" }}
-              value: {{ .Values.app.dbURL | quote }} # configure to pull from vault or supplied by vault sidecar
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.app.secretName | quote }}
+                  key:  dbURL
+            - name: SECRET_KEY_BASE
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.app.secretName | quote }}
+                  key: secretKeyBase
 {{- else }}
+            - name: DATABASE_URL
               value: {{ .Values.app.dbURL | quote }}
+            - name: SECRET_KEY_BASE
+              value: {{ .Values.app.secretKeyBase | quote }}
 {{- end }}
             - name: DB_POOL
               value: {{ .Values.app.dbPool | quote }}
@@ -59,12 +71,6 @@ spec:
               value: {{ .Values.app.forceSSL | quote }}
             - name: DEFAULT_COMPATIBILITY
               value: {{ .Values.app.defaultCompatibility | quote }}
-            - name: SECRET_KEY_BASE
-{{- if eq .Values.app.env "production" }}
-              value: {{ .Values.app.secretKeyBase | quote }} # configure to pull from vault or supplied by vault sidecar
-{{- else }}
-              value: {{ .Values.app.secretKeyBase | quote }}
-{{- end }}
             - name: DISABLE_PASSWORD
               value: {{ .Values.app.disablePWD | quote }}
 {{- if .Values.app.rollbarAccessToken }}

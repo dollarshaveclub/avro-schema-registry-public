@@ -26,11 +26,11 @@ notifications:
       templates:
         success:
           description: "The Acyl environment {{ .EnvName }} was created successfully."
-          target_url: "https://{{ .EnvName }}.dqa.wtf"
+          target_url: "https://avro-schema-registry-{{ .EnvName }}.dqa.wtf"
   templates:
     success:
       title: "🏁 Environment Ready"
       sections:
         - title: "{{ .EnvName }}"
-          text: "{{ .Repo }}\nPR #{{ .PullRequest }}: {{ .SourceBranch }} ➡️ {{ .BaseBranch }}\nhttps://{{ .EnvName }}.dqa.wtf\nK8s Namespace: {{ .K8sNamespace }}"
+          text: "{{ .Repo }}\nPR #{{ .PullRequest }}: {{ .SourceBranch }} ➡️ {{ .BaseBranch }}\nhttps://avro-schema-registry-{{ .EnvName }}.dqa.wtf\nK8s Namespace: {{ .K8sNamespace }}"
           style: "good"
