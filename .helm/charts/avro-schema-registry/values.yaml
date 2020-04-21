@@ -68,6 +68,16 @@ app:
   ddAPMServiceName: avro-schema-registry
   ddTraceAnalyticsEnabled: false
 
+envoy:
+  name: envoy-sidecar
+  defaultHostHTTP10: avro-schema-registry
+  enabled: false
+  image:
+    repo: envoyproxy/envoy
+    tag: v1.10.0
+  internalAdminPort: 9091
+  internalProxyPort: 10000
+
 livenessProbe:
   initialDelaySeconds: 300
   timeoutSeconds: 5

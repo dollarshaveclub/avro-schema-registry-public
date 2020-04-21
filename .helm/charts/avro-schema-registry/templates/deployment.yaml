@@ -25,6 +25,34 @@ spec:
       imagePullSecrets:
         - name: {{ .Values.image.pullSecrets | quote }}
       containers:
+{{- if .Values.envoy.enabled }}
+        - name: envoy
+          ports:
+            - name: {{ .Values.envoy.name }}
+              containerPort: {{ .Values.envoy.internalProxyPort }}
+              protocol: TCP
+          resources:
+            limits:
+              cpu: 100m
+              memory: 128Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
+          volumeMounts:
+            - name: {{ .Values.service.name }}-{{ .Values.envoy.name }}
+              mountPath: /{{ .Values.service.name }}-{{ .Values.envoy.name }}
+          image: "{{ .Values.envoy.image.repo }}:{{ .Values.envoy.image.tag }}"
+          imagePullPolicy: {{ .Values.envoy.image.pullPolicy | quote }}
+          command:
+            - /usr/local/bin/envoy
+          args:
+            - -c
+            - /{{ .Values.service.name }}-{{ .Values.envoy.name }}/envoy.yaml
+            - --log-path
+            - /dev/stdout
+            - --log-level
+            - "debug"
+{{- end }}
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
@@ -130,6 +158,15 @@ spec:
 {{- if .Values.volumes }}
       volumes:
 {{ toYaml .Values.volumes | indent 8 }}
+{{- end }}
+{{- if .Values.envoy.enabled }}
+      volumes:
+        - name: {{ .Values.service.name }}-{{ .Values.envoy.name }}
+          configMap:
+            name: {{ .Values.service.name }}-{{ .Values.envoy.name }}
+            items:
+              - key: envoy.yaml
+                path: envoy.yaml
 {{- end }}
 {{- if .Values.nodeSelector }}
       nodeSelector:

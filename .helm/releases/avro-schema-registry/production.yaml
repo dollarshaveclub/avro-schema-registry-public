@@ -10,7 +10,7 @@ ingress:
   hosts:
     - avro-schema-registry.aws.shave.io # TBD
   annotations:
-    ingress.kubernetes.io/force-ssl-redirect: "true"
+    ingress.kubernetes.io/force-ssl-redirect: "false" # TBD
     kubernetes.io/ingress.class: internal-ingress
 
 app:
@@ -26,3 +26,6 @@ app:
   vaultPathPrefix: secret/services/avro-schema-registry/production/
   rollbarAccessToken: d8034ca2eef844e0a1df3fc1927b2a83
   ddTraceAnalyticsEnabled: true
+
+envoy:
+  enabled: true
