@@ -32,5 +32,5 @@ notifications:
       title: "🏁 Environment Ready"
       sections:
         - title: "{{ .EnvName }}"
-          text: "{{ .Repo }}\nPR #{{ .PullRequest }}: {{ .SourceBranch }} ➡️ {{ .BaseBranch }}\nhttps://avro-schema-registry-{{ .EnvName }}.dqa.wtf\nK8s Namespace: {{ .K8sNamespace }}"
+          text: "{{ .Repo }}\nPR #{{ .PullRequest }}: {{ .SourceBranch }} ➡️ {{ .BaseBranch }}\nURL if enabled: https://avro-schema-registry-{{ .EnvName }}.dqa.wtf\nK8s Namespace: {{ .K8sNamespace }}"
           style: "good"
