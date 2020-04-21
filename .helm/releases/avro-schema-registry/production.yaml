@@ -3,7 +3,7 @@ replicaCount: 2 # final value TBD
 image:
   pullSecrets: dollarshaveclub-kubernetes-pull-secret
 
-#createServiceAccount: true
+createServiceAccount: true
 
 ingress:
   enabled: true # TBD
