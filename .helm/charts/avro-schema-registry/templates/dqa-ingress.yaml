@@ -1,4 +1,4 @@
-{{ if .Values.env_name }}
+{{ if and (.Values.env_name) (.Values.ingress.enabled) }} # optional ingress: if DQA & ingress enabled
 {{- $name := .Values.service.name -}}
 {{- $port := .Values.service.externalPort -}}
 apiVersion: traefik.containo.us/v1alpha1
