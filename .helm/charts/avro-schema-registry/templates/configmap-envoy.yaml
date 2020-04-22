@@ -39,22 +39,28 @@ data:
                 - name: local_service
                   domains: ["*"]
                   routes:
-                  - match:
+                  - name: allow_post_path
+                    match:
                       prefix: "/compatibility/subjects/"
                       headers:
-                        - exact_match": "POST"
+                        - name: method
+                          exact_match": "POST"
                     route:
                       cluster: avro_schema_registy
-                  - match:
+                  - name: deny_delete_put_all_paths
+                    match:
                       prefix: "/"
                       headers:
-                        - exact_match": "DELETE|PUT"
+                        - name: method
+                          exact_match": "DELETE|PUT"
                     direct_response:
                       status: 403
-                  - match:
+                  - name: allow_get_options_all_paths
+                    match:
                       prefix: "/"
                       headers:
-                        - exact_match": "GET|OPTIONS"
+                        - name: method
+                          exact_match": "GET|OPTIONS"
                     route:
                       cluster: avro_schema_registy
               http_filters:
