@@ -9,6 +9,7 @@ application:
   image: 'quay.io/dollarshaveclub/avro-schema-registry'
   value_overrides:
 #   - "dqaIngress.enabled=true" # uncomment to enable on DQAs
+#   - "envoy.enabled=true" # uncomment to enable on DQAs
 
 dependencies:
   direct:

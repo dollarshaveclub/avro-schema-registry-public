@@ -13,6 +13,3 @@ app:
   vaultRole: avro-schema-registry-dqa
   vaultK8sAuthUrlPrefix: kube.shave.io
   vaultPathPrefix: secret/services/avro-schema-registry/dqa/
-
-envoy:
-  enabled: true
