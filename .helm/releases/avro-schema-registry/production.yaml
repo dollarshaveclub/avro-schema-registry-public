@@ -6,7 +6,7 @@ image:
 createServiceAccount: true
 
 ingress:
-  enabled: true # TBD
+  enabled: false # will be true, turned off for initial testing, use port-forward
   hosts:
     - avro-schema-registry.aws.shave.io # TBD
   annotations:
@@ -24,8 +24,8 @@ app:
   vaultK8sAuthUrlPrefix: kube.shave.io
   vaultTokenPath: /var/run/secrets/kubernetes.io/serviceaccount/token
   vaultPathPrefix: secret/services/avro-schema-registry/production/
-  rollbarAccessToken: d8034ca2eef844e0a1df3fc1927b2a83
-  ddTraceAnalyticsEnabled: true
+  rollbarAccessToken: '' # will be d8034ca2eef844e0a1df3fc1927b2a83, turned off for initial testing
+  ddTraceAnalyticsEnabled: false # will be true, turned off for initial testing
 
 envoy:
   enabled: true
