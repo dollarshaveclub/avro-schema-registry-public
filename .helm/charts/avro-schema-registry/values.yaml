@@ -74,7 +74,7 @@ envoy:
   enabled: false
   image:
     repo: envoyproxy/envoy
-    tag: v1.10.0
+    tag: v1.12.3
   internalAdminPort: 9091
   internalProxyPort: 10000
 
