@@ -43,24 +43,24 @@ data:
                     match:
                       prefix: "/compatibility/subjects/"
                       headers:
-                        - name: method
-                          exact_match": "POST"
+                        - name: ":method"
+                          exact_match: "POST"
                     route:
                       cluster: avro_schema_registy
                   - name: deny_delete_put_all_paths
                     match:
                       prefix: "/"
                       headers:
-                        - name: method
-                          exact_match": "DELETE|PUT"
+                        - name: ":method"
+                          regex_match: "DELETE|POST|PUT"
                     direct_response:
                       status: 403
                   - name: allow_get_options_all_paths
                     match:
                       prefix: "/"
                       headers:
-                        - name: method
-                          exact_match": "GET|OPTIONS"
+                        - name: ":method"
+                          regex_match: "GET|OPTIONS"
                     route:
                       cluster: avro_schema_registy
               http_filters:
