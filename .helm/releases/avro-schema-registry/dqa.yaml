@@ -2,6 +2,7 @@ image:
   pullSecrets: image-pull-secret
 
 dqaIngress:
+  enabled: true
   domain: dqa.wtf
 
 app:

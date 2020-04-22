@@ -1,4 +1,4 @@
-{{- if .Values.env_name }}
+{{- if .Values.dqaIngress.enabled }}
 {{- $name := .Values.service.name -}}
 {{- $port := .Values.service.externalPort -}}
 apiVersion: traefik.containo.us/v1alpha1

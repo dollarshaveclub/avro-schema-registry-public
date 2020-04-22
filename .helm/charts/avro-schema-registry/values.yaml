@@ -32,6 +32,9 @@ ingress:
     - host: schemaregistry.example.local
       paths: []
 
+dqaIngress:
+  enabled: false
+
 dnsPolicy: ClusterFirst
 dnsConfig: {}
 #  options:
