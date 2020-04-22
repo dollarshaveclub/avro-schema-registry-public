@@ -7,6 +7,8 @@ application:
   chart_path: '.helm/charts/avro-schema-registry'
   chart_vars_path: '.helm/releases/avro-schema-registry/dqa.yaml'
   image: 'quay.io/dollarshaveclub/avro-schema-registry'
+  value_overrides:
+#   - "dqaIngress.enabled=true" # uncomment to enable on DQAs
 
 dependencies:
   direct:
