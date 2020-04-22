@@ -6,10 +6,10 @@ metadata:
   labels:
 {{ include "labels" . | indent 4 }}
 data:
+  ## refs:
+  ## - https://www.envoyproxy.io/docs/envoy/latest/start/start#quick-start-to-run-simple-example
+  ## - https://raw.githubusercontent.com/envoyproxy/envoy/master/configs/google_com_proxy.v2.yaml
   envoy.yaml: |-
-    ## refs:
-    ## - https://www.envoyproxy.io/docs/envoy/latest/start/start#quick-start-to-run-simple-example
-    ## - https://raw.githubusercontent.com/envoyproxy/envoy/master/configs/google_com_proxy.v2.yaml
     admin:
       access_log_path: /dev/stdout
       address:
@@ -40,25 +40,21 @@ data:
                   domains: ["*"]
                   routes:
                   - match:
-                      regex: "/compatibility/subjects/*"
+                      prefix: "/compatibility/subjects/"
                       headers:
-                        - name: ":method"
-                          exact_match": "POST"
+                        - exact_match": "POST"
                     route:
                       cluster: avro_schema_registy
                   - match:
-                      regex: "/*"
+                      prefix: "/"
                       headers:
-                        - name: ":method"
-                          exact_match": "DELETE|PUT"
-                    route:
-                      direct_response:
-                        status: "403"
+                        - exact_match": "DELETE|PUT"
+                    direct_response:
+                      status: 403
                   - match:
-                      regex: "/*"
+                      prefix: "/"
                       headers:
-                        - name: ":method"
-                          exact_match": "GET|OPTIONS"
+                        - exact_match": "GET|OPTIONS"
                     route:
                       cluster: avro_schema_registy
               http_filters:
