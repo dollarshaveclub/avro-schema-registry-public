@@ -1,4 +1,7 @@
 {{- if .Values.envoy.enabled }}
+## refs:
+## - https://www.envoyproxy.io/docs/envoy/latest/start/start#quick-start-to-run-simple-example
+## - https://raw.githubusercontent.com/envoyproxy/envoy/master/configs/google_com_proxy.v2.yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -6,9 +9,6 @@ metadata:
   labels:
 {{ include "labels" . | indent 4 }}
 data:
-  ## refs:
-  ## - https://www.envoyproxy.io/docs/envoy/latest/start/start#quick-start-to-run-simple-example
-  ## - https://raw.githubusercontent.com/envoyproxy/envoy/master/configs/google_com_proxy.v2.yaml
   envoy.yaml: |-
     admin:
       access_log_path: /dev/stdout
@@ -36,8 +36,15 @@ data:
               route_config:
                 name: local_route
                 virtual_hosts:
-                - name: local_service
-                  domains: ["*"]
+                - name: read_only
+                  domains:
+{{- if eq .Values.app.env "production" }}
+                  - "avro-schema-registry-read-only.aws.shave.io"
+{{- else if eq .Values.app.env "qa" }}
+                  - "avro-schema-registry-read-only-{{ .Values.env_name }}.{{ .Values.dqaIngress.domain }}"
+{{- else }}
+                  - "*read-only*"
+{{- end }}
                   routes:
                   - name: allow_post_path
                     match:
@@ -61,6 +68,21 @@ data:
                       headers:
                         - name: ":method"
                           regex_match: "GET|OPTIONS"
+                    route:
+                      cluster: avro_schema_registy
+                - name: admin
+                  domains:
+{{- if eq .Values.app.env "production" }}
+                  - "avro-schema-registry.aws.shave.io"
+{{- else if eq .Values.app.env "qa" }}
+                  - "avro-schema-registry-{{ .Values.env_name }}.{{ .Values.dqaIngress.domain }}"
+{{- else }}
+                  - "*"
+{{- end }}
+                  routes:
+                  - name: unrestricted
+                    match:
+                      prefix: "/"
                     route:
                       cluster: avro_schema_registy
               http_filters:
