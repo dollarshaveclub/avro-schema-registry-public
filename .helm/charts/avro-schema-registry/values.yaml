@@ -88,7 +88,7 @@ livenessProbe:
   successThreshold: 1
   failureThreshold: 3
   httpGet:
-    path: '/' #TBD
+    path: '/'
 
 readinessProbe:
   initialDelaySeconds: 20
@@ -97,7 +97,7 @@ readinessProbe:
   successThreshold: 1
   failureThreshold: 3
   httpGet:
-    path: '/' #TBD
+    path: '/'
 
 resources: {}
   # limits:
