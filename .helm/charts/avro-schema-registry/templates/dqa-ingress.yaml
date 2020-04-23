@@ -16,6 +16,11 @@ spec:
       services:
         - name: {{ $name }}
           port: {{ $port }}
+    - match: HostRegexp(`{{ $name }}-read-only-{{ .Values.env_name }}.{{ .Values.dqaIngress.domain }}`)
+      kind: Rule
+      services:
+        - name: {{ $name }}
+          port: {{ $port }}
   tls:
 {{- if eq .Values.dqaIngress.domain "dsc.qa" }}
     secretName: cert-dsc-qa

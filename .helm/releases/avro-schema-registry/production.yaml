@@ -9,6 +9,7 @@ ingress:
   enabled: false # will be true, turned off for initial testing, use port-forward
   hosts:
     - avro-schema-registry.aws.shave.io # TBD
+    - avro-schema-registry-read-only.aws.shave.io # TBD
   annotations:
     ingress.kubernetes.io/force-ssl-redirect: "false" # TBD
     kubernetes.io/ingress.class: internal-ingress
