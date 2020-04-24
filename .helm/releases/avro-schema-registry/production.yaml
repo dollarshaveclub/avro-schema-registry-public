@@ -24,7 +24,7 @@ app:
   vaultTokenPath: /var/run/secrets/kubernetes.io/serviceaccount/token
   vaultPathPrefix: secret/services/avro-schema-registry/production/
   rollbarAccessToken: d8034ca2eef844e0a1df3fc1927b2a83
-  ddTraceAnalyticsEnabled: true
+  ddTraceAnalyticsEnabled: false
 
 envoy:
   enabled: true
