@@ -49,8 +49,6 @@ app:
   env: development
   secretName: ''
   railsEnv: production # use production for all environments
-  statsdHost: datadog.tools.svc.cluster.local.
-  statsdPort: 8125
   railsLogToStdOut: true
   dbURL: postgresql://root:root@postgres:5432/avro-schema-registry_development
   dbPool: 25
@@ -70,6 +68,8 @@ app:
   rollbarAccessToken: ''
   ddAPMServiceName: avro-schema-registry
   ddTraceAnalyticsEnabled: false
+  ddTracerHostname: datadog.tools.svc.cluster.local
+  ddTracerPort: 8126
 
 envoy:
   name: envoy-sidecar

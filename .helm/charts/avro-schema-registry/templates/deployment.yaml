@@ -110,14 +110,12 @@ spec:
 {{- if .Values.app.ddTraceAnalyticsEnabled }}
             - name: DATADOG_APM_SERVICE_NAME
               value: {{ .Values.app.ddAPMServiceName | quote }}
+            - name: DATADOG_TRACER_HOSTNAME
+              value: {{ .Values.app.ddTracerHostname | quote }}
+            - name: DATADOG_TRACER_PORT
+              value: {{ .Values.app.ddTracerPort | quote }}
             - name: DD_ENV
               value: {{ .Values.app.env | quote }}
-{{- end }}
-{{- if .Values.app.statsdHost }}
-            - name: STATSD_HOST
-              value: {{ .Values.app.statsdHost | quote }}
-            - name: STATSD_PORT
-              value: {{ .Values.app.statsdPort | quote }}
 {{- end }}
             - name: VAULT_ADDR
               value: {{ .Values.app.vaultAddr | quote }}

@@ -16,8 +16,6 @@ app:
   env: development
   secretName: ''
   railsEnv: production # use production for all environments
-  statsdHost: ''
-  statsdPort: 8125
   railsLogToStdOut: true
   disablePWD: true
   dbURL: postgresql://root:root@postgres:5432/avro-schema-registry_development
