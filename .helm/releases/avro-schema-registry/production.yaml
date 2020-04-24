@@ -6,12 +6,12 @@ image:
 createServiceAccount: true
 
 ingress:
-  enabled: false # will be true, turned off for initial testing, use port-forward
+  enabled: true
   hosts:
-    - avro-schema-registry.aws.shave.io # TBD
-    - avro-schema-registry-read-only.aws.shave.io # TBD
+    - test-avro-schema-registry.aws.shave.io # 'test-' prefix temporary testing
+    - test-avro-schema-registry-read-only.aws.shave.io # 'test-' prefix temporary testing
   annotations:
-    ingress.kubernetes.io/force-ssl-redirect: "false" # TBD
+    ingress.kubernetes.io/force-ssl-redirect: "false" # TBD, don't wan't https
     kubernetes.io/ingress.class: internal-ingress
 
 app:

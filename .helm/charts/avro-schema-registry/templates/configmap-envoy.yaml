@@ -39,7 +39,7 @@ data:
                 - name: read_only
                   domains:
 {{- if eq .Values.app.env "production" }}
-                  - "avro-schema-registry-read-only.aws.shave.io"
+                  - "test-avro-schema-registry-read-only.aws.shave.io" c
 {{- else if eq .Values.app.env "qa" }}
                   - "avro-schema-registry-read-only-{{ .Values.env_name }}.{{ .Values.dqaIngress.domain }}"
 {{- else }}
@@ -73,7 +73,7 @@ data:
                 - name: admin
                   domains:
 {{- if eq .Values.app.env "production" }}
-                  - "avro-schema-registry.aws.shave.io"
+                  - "test-avro-schema-registry.aws.shave.io" # 'test-' prefix temporary testing
 {{- else if eq .Values.app.env "qa" }}
                   - "avro-schema-registry-{{ .Values.env_name }}.{{ .Values.dqaIngress.domain }}"
 {{- else }}
