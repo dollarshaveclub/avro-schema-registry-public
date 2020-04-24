@@ -37,9 +37,3 @@ spec:
               value: {{ .Values.app.secretKeyBase | quote }}
             - name: DISABLE_DATABASE_ENVIRONMENT_CHECK
               value: "1" # necessary for DQA upgrades
-{{- if .Values.app.statsdHost }}
-            - name: STATSD_HOST
-              value: {{ .Values.app.statsdHost | quote }}
-            - name: STATSD_PORT
-              value: {{ .Values.app.statsdPort | quote }}
-{{- end }}

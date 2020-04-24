@@ -8,10 +8,9 @@ createServiceAccount: true
 ingress:
   enabled: true
   hosts:
-    - test-avro-schema-registry.aws.shave.io # 'test-' prefix temporary testing
-    - test-avro-schema-registry-read-only.aws.shave.io # 'test-' prefix temporary testing
+    - avro-schema-registry.shave.io
+    - avro-schema-registry-read-only.shave.io
   annotations:
-    ingress.kubernetes.io/force-ssl-redirect: "false" # TBD, don't wan't https
     kubernetes.io/ingress.class: internal-ingress
 
 app:
@@ -19,7 +18,6 @@ app:
   secretName: avro-schema-registry-production
   fingerprintVersion: 2
   disableSchemaRegistration: true
-  statsdHost: datadog.tools.svc.cluster.local.
   vaultAddr: http://vault.shave.io:8200
   vaultRole: avro-schema-registry-production
   vaultK8sAuthUrlPrefix: kube.shave.io
