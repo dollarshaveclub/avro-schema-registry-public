@@ -5,6 +5,10 @@ metadata:
   namespace: {{ .Release.Namespace }}
   labels:
 {{ include "labels" . | indent 4 }}
+{{- if and (.Values.createServiceAccount) (.Values.app.vaultRole) }}
+  annotations:
+    "helm.sh/hook": post-install,post-upgrade
+{{- end }}
 spec:
   activeDeadlineSeconds: {{ .Values.job.activeDeadlineSeconds }}
   template:
@@ -37,3 +41,19 @@ spec:
               value: {{ .Values.app.secretKeyBase | quote }}
             - name: DISABLE_DATABASE_ENVIRONMENT_CHECK
               value: "1" # necessary for DQA upgrades
+            - name: VAULT_ADDR
+              value: {{ .Values.app.vaultAddr | quote }}
+            - name: VAULT_PATH_PREFIX
+              value: {{ .Values.app.vaultPathPrefix | quote }}
+{{- if .Values.app.vaultRole }}
+            - name: VAULT_ROLE
+              value: {{ .Values.app.vaultRole | quote }}
+{{- end }}
+{{- if .Values.app.vaultToken }}
+            - name: VAULT_TOKEN
+              value: {{ .Values.app.vaultToken | quote }}
+{{- end }}
+{{- if .Values.app.vaultK8sAuthUrlPrefix }}
+            - name: VAULT_K8S_AUTH_URL_PREFIX
+              value: {{ .Values.app.vaultK8sAuthUrlPrefix | quote }}
+{{- end }}
