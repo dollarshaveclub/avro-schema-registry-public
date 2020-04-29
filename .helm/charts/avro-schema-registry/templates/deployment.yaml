@@ -24,15 +24,15 @@ spec:
         vault.hashicorp.com/agent-configmap: "{{ .Values.service.name }}-{{ .Values.vaultK8s.name }}"
   {{- else }}
         vault.hashicorp.com/agent-inject-secret-services-db-url: "{{ .Values.app.vaultPathPrefix }}db/url"
-        vault.hashicorp.com/agent-template-secret-services-avro-schema-registry-db-url: |
-    {{` {{- with secret "{{ .Values.app.vaultPathPrefix }}db/url" -}}
-        {{ .Data.value }}
-    {{- end }} `}}
+#        vault.hashicorp.com/agent-template-secret-services-avro-schema-registry-db-url: |
+#    {{` {{- with secret "{{ .Values.app.vaultPathPrefix }}db/url" -}}
+#        {{ .Data.value }}
+#    {{- end }} `}}
         vault.hashicorp.com/agent-inject-secret-secretkeybase: "{{ .Values.app.vaultPathPrefix }}/secretkeybase"
-        vault.hashicorp.com/agent-template-secret-services-avro-schema-registry-secretkeybase: |
-    {{` {{- with secret "{{ .Values.app.vaultPathPrefix }}secretkeybase" -}}
-        {{ .Data.value }}
-    {{- end }} `}}
+#        vault.hashicorp.com/agent-template-secret-services-avro-schema-registry-secretkeybase: |
+#    {{` {{- with secret "{{ .Values.app.vaultPathPrefix }}secretkeybase" -}}
+#        {{ .Data.value }}
+#    {{- end }} `}}
   {{- end }}
         vault.hashicorp.com/role: {{ .Values.app.vaultRole | quote }}
 {{- end }}
