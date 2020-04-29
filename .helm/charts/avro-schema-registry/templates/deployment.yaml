@@ -17,6 +17,25 @@ spec:
       labels:
         app: {{ template "name" . }}
         release: {{ .Release.Name }}
+{{- if .Values.vaultK8s.enabled }}
+      annotations:
+        vault.hashicorp.com/agent-inject: "true"
+  {{- if .Values.vaultK8s.useConfigmap }}
+        vault.hashicorp.com/agent-configmap: "{{ .Values.service.name }}-{{ .Values.vaultK8s.name }}"
+  {{- else }}
+        vault.hashicorp.com/agent-inject-secret-services-url: "{{ .Values.app.vaultPathPrefix }}db"
+        vault.hashicorp.com/agent-template-secret-services-avro-schema-registry-db-url: |
+    {{` {{- with secret "{{ .Values.app.vaultPathPrefix }}db" -}}
+        {{ .Data.url }}
+    {{- end }} `}}
+        vault.hashicorp.com/agent-inject-secret-secretkeybase: "{{ .Values.app.vaultPathPrefix }}"
+        vault.hashicorp.com/agent-template-secret-services-avro-schema-registry-secretkeybase: |
+    {{` {{- with secret "{{ .Values.app.vaultPathPrefix }}" -}}
+        {{ .Data.secretkeybase }}
+    {{- end }} `}}
+  {{- end }}
+        vault.hashicorp.com/role: {{ .Values.app.vaultRole | quote }}
+{{- end }}
     spec:
       serviceAccountName: {{ .Values.app.vaultRole }}
       dnsPolicy: {{ .Values.dnsPolicy }}
@@ -56,6 +75,11 @@ spec:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+{{- if .Values.vaultK8s.enabled }}
+          volumeMounts:
+            - name: {{ .Values.service.name }}-{{ .Values.vaultK8s.name }}
+              mountPath: /{{ .Values.service.name }}-{{ .Values.vaultK8s.name }}
+{{- end }}
           ports:
             - containerPort: {{ .Values.service.internalPort }}
               protocol: TCP
@@ -165,6 +189,15 @@ spec:
             items:
               - key: envoy.yaml
                 path: envoy.yaml
+{{- end }}
+{{- if .Values.vaultK8s.enabled }}
+      volumes:
+        - name: {{ .Values.service.name }}-{{ .Values.vaultK8s.name }}
+          configMap:
+            name: {{ .Values.service.name }}-{{ .Values.vaultK8s.name }}
+            items:
+              - key: config.hcl
+                path: config.hcl
 {{- end }}
 {{- if .Values.nodeSelector }}
       nodeSelector:

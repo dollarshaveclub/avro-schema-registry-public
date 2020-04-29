@@ -1,0 +1,48 @@
+{{- if .Values.vaultK8s.enabled }}
+## refs:
+## - https://www.vaultproject.io/docs/platform/k8s/injector/examples#configmap-example
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.service.name }}-{{ .Values.vaultK8s.name }}
+  labels:
+{{ include "labels" . | indent 4 }}
+data:
+  config.hcl: |
+      "auto_auth" = {
+        "method" = {
+          "config" = {
+            "role" = "{{ .Values.app.vaultRole }}"
+          }
+          "type" = "{{ .Values.app.vaultK8sAuthUrlPrefix }}"
+        }
+
+        "sink" = {
+          "config" = {
+            "path" = "/home/vault/.token"
+          }
+
+          "type" = "file"
+        }
+      }
+
+      "exit_after_auth" = false
+      "pid_file" = "/home/vault/.pid"
+
+      "template" = {
+        "contents" = {{` "{{- with secret \"{{ .Values.app.vaultPathPrefix }}db/url\" -}}{{ .Data.value }}{{- end }}" `}}
+        "destination" = "{{ .Values.app.vaultPathPrefix }}db/url"
+      }
+
+      "template" = {
+        "contents" = {{` "{{- with secret \"{{ .Values.app.vaultPathPrefix }}secretkeybase\" -}}{{ .Data.value }}{{- end }}" `}}
+        "destination" = "{{ .Values.app.vaultPathPrefix }}secretkeybase"
+      }
+
+      "vault" = {
+        "address" = "{{ .Values.app.vaultAddr }}"
+        "ca_cert" = "/vault/tls/ca.crt"
+        "client_cert" = "/vault/tls/client.crt"
+        "client_key" = "/vault/tls/client.key"
+      }
+{{- end }}

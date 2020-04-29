@@ -78,8 +78,20 @@ envoy:
   image:
     repo: envoyproxy/envoy
     tag: v1.12.3
+    pullPolicy: IfNotPresent
   internalAdminPort: 9091
   internalProxyPort: 10000
+
+vaultK8s:
+  name: vault-k8s-injector
+  enabled: false
+  useConfigmap: true
+#  image:
+#    repo: hashicorp/vault-k8s
+#    tag: 0.3.0
+#    pullPolicy: IfNotPresent
+#  externalPort: 8080
+#  internalPort: 8080
 
 livenessProbe:
   initialDelaySeconds: 300
