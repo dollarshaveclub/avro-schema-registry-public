@@ -53,6 +53,7 @@ app:
   railsLogToStdOut: true
   dbURL: postgresql://root:root@postgres:5432/avro-schema-registry_development
   dbPool: 25
+  dbDisableEnvCheck: 0
   runMigration: false
   forceSSL: false
   secretKeyBase: ac4e76bc1a5fdd3ab0d19dd205029da31adebed83df2fc01

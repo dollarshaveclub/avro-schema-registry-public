@@ -40,7 +40,7 @@ spec:
             - name: SECRET_KEY_BASE
               value: {{ .Values.app.secretKeyBase | quote }}
             - name: DISABLE_DATABASE_ENVIRONMENT_CHECK
-              value: "1" # necessary for DQA upgrades
+              value: {{ .Values.app.dbDisableEnvCheck | quote }} # "1" necessary for upgrades with db:setup
             - name: VAULT_ADDR
               value: {{ .Values.app.vaultAddr | quote }}
             - name: VAULT_PATH_PREFIX
