@@ -1,0 +1,60 @@
+{{- if .Values.app.runMigration }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ template "fullname" . }}-{{ randAlphaNum 5 | lower }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+{{ include "labels" . | indent 4 }}
+  annotations:
+    "helm.sh/hook": pre-install,pre-upgrade
+    "helm.sh/hook-weight": "-2"
+spec:
+  activeDeadlineSeconds: {{ .Values.job.activeDeadlineSeconds }}
+  template:
+    metadata:
+      name:  {{ template "fullname" . }}
+      labels:
+        chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    spec:
+      serviceAccountName: {{ .Values.app.vaultRole }}
+      restartPolicy: {{ .Values.restartPolicy }}
+      imagePullSecrets:
+        - name: {{ .Values.image.pullSecrets | quote }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: ["bundle", "exec", "rake", "db:setup"]
+          env:
+            - name: RACK_ENV
+              value: {{ .Values.app.railsEnv | quote }}
+            - name: RAILS_ENV
+              value: {{ .Values.app.railsEnv | quote }}
+            - name: RAILS_LOG_TO_STDOUT
+              value: {{ .Values.app.railsLogToStdOut | quote }}
+            - name: DISABLE_PASSWORD
+              value: {{ .Values.app.disablePWD | quote }}
+            - name: DATABASE_URL
+              value: {{ .Values.app.dbURL | quote }}
+            - name: SECRET_KEY_BASE
+              value: {{ .Values.app.secretKeyBase | quote }}
+            - name: DISABLE_DATABASE_ENVIRONMENT_CHECK
+              value: "1" # necessary for DQA upgrades
+            - name: VAULT_ADDR
+              value: {{ .Values.app.vaultAddr | quote }}
+            - name: VAULT_PATH_PREFIX
+              value: {{ .Values.app.vaultPathPrefix | quote }}
+{{- if .Values.app.vaultRole }}
+            - name: VAULT_ROLE
+              value: {{ .Values.app.vaultRole | quote }}
+{{- end }}
+{{- if .Values.app.vaultToken }}
+            - name: VAULT_TOKEN
+              value: {{ .Values.app.vaultToken | quote }}
+{{- end }}
+{{- if .Values.app.vaultK8sAuthUrlPrefix }}
+            - name: VAULT_K8S_AUTH_URL_PREFIX
+              value: {{ .Values.app.vaultK8sAuthUrlPrefix | quote }}
+{{- end }}
+{{- end }}

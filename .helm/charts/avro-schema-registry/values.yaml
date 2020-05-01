@@ -19,6 +19,7 @@ service:
   externalPort: 8081
   internalPort: 8081
 
+restartPolicy: OnFailure
 createServiceAccount: false
 createSecret: false
 
@@ -52,6 +53,7 @@ app:
   railsLogToStdOut: true
   dbURL: postgresql://root:root@postgres:5432/avro-schema-registry_development
   dbPool: 25
+  runMigration: false
   forceSSL: false
   secretKeyBase: ac4e76bc1a5fdd3ab0d19dd205029da31adebed83df2fc01
   disablePWD: true
@@ -70,6 +72,9 @@ app:
   ddTraceAnalyticsEnabled: false
   ddTracerHostname: datadog.tools.svc.cluster.local
   ddTracerPort: 8126
+
+job:
+  activeDeadlineSeconds: 600
 
 envoy:
   name: envoy-sidecar
