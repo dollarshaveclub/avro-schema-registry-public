@@ -8,7 +8,7 @@ application:
   chart_vars_path: '.helm/releases/avro-schema-registry/dqa.yaml'
   image: 'quay.io/dollarshaveclub/avro-schema-registry'
   value_overrides:
-   - "dqaIngress.enabled=true"  # to enable on DQAs
+#   - "dqaIngress.enabled=true"  # to enable on DQAs
 #   - "envoy.enabled=true"       # to enable on DQAs
 
 dependencies:
@@ -16,11 +16,6 @@ dependencies:
     - name: avro-schema-registry-postgres
       chart_path: '.helm/charts/avro-schema-registry-postgres'
       chart_vars_path: '.helm/releases/avro-schema-registry-postgres/dqa.yaml'
-#    - name: avro-schema-registry-db-migration
-#      chart_path: '.helm/charts/avro-schema-registry-db-migration'
-#      chart_vars_path: '.helm/releases/avro-schema-registry-db-migration/dqa.yaml'
-#      requires:
-#        - avro-schema-registry-postgres
   environment:
 
 notifications:
