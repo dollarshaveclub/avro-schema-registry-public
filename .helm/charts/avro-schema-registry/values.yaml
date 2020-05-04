@@ -105,7 +105,7 @@ readinessProbe:
   httpGet:
     path: '/'
 
-resources: {}
+resources: {} # remove and uncomment limits, updating with desired settings
   # limits:
   #   cpu: 100m
   #   memory: 128Mi
