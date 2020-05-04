@@ -1,0 +1,17 @@
+image:
+  pullSecrets: image-pull-secret
+
+createServiceAccount: true
+
+dqaIngress:
+  domain: dqa.wtf
+
+app:
+  env: qa
+  dbURL: postgresql://root:root@avro-schema-registry-postgres:5432/avro-schema-registry_test
+  dbDisableEnvCheck: 1
+  runMigration: true
+  vaultAddr: http://vault.shave.io:8200
+  vaultRole: avro-schema-registry-dqa
+  vaultK8sAuthUrlPrefix: kube.shave.io
+  vaultPathPrefix: secret/services/avro-schema-registry/dqa/

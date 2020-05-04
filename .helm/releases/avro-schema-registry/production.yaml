@@ -1,0 +1,30 @@
+replicaCount: 2 # final value TBD
+
+image:
+  pullSecrets: dollarshaveclub-kubernetes-pull-secret
+
+createServiceAccount: true
+
+ingress:
+  enabled: true
+  hosts:
+    - avro-schema-registry.shave.io
+    - avro-schema-registry-read-only.shave.io
+  annotations:
+    kubernetes.io/ingress.class: internal-ingress
+
+app:
+  env: production
+  secretName: avro-schema-registry-production
+  fingerprintVersion: 2
+  disableSchemaRegistration: true
+  vaultAddr: http://vault.shave.io:8200
+  vaultRole: avro-schema-registry-production
+  vaultK8sAuthUrlPrefix: kube.shave.io
+  vaultTokenPath: /var/run/secrets/kubernetes.io/serviceaccount/token
+  vaultPathPrefix: secret/services/avro-schema-registry/production/
+  rollbarAccessToken: d8034ca2eef844e0a1df3fc1927b2a83
+  ddTraceAnalyticsEnabled: false
+
+envoy:
+  enabled: true

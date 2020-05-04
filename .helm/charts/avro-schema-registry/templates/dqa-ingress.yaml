@@ -1,0 +1,40 @@
+{{- if .Values.dqaIngress.enabled }}
+{{- $name := .Values.service.name -}}
+{{- $port := .Values.service.externalPort -}}
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: ingress-routes
+  annotations:
+    kubernetes.io/ingress.class: "traefik/dqa"
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: HostRegexp(`{{ $name }}-{{ .Values.env_name }}.{{ .Values.dqaIngress.domain }}`)
+      kind: Rule
+      services:
+        - name: {{ $name }}
+          port: {{ $port }}
+    - match: HostRegexp(`{{ $name }}-read-only-{{ .Values.env_name }}.{{ .Values.dqaIngress.domain }}`)
+      kind: Rule
+      services:
+        - name: {{ $name }}
+          port: {{ $port }}
+  tls:
+{{- if eq .Values.dqaIngress.domain "dsc.qa" }}
+    secretName: cert-dsc-qa
+{{- end }}
+{{- if eq .Values.dqaIngress.domain "dqa.email" }}
+    secretName: cert-dqa-email
+{{- end }}
+{{- if eq .Values.dqaIngress.domain "dqa.life" }}
+    secretName: cert-dqa-life
+{{- end }}
+{{- if eq .Values.dqaIngress.domain "dqa.services" }}
+    secretName: cert-dqa-services
+{{- end }}
+{{- if eq .Values.dqaIngress.domain "dqa.wtf" }}
+    secretName: cert-dqa-wtf
+{{- end }}
+{{- end }}

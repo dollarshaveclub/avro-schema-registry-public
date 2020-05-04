@@ -1,0 +1,4 @@
+apiVersion: v1
+description: A Helm chart for Kubernetes, the base chart is designed for development using the public container defined, with release files to override per envrionrment.
+name: postgres
+version: 0.1.0
