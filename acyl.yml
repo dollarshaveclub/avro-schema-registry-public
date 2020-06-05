@@ -4,8 +4,8 @@ target_branches:
   - master
 
 application:
-  chart_path: '.helm/charts/avro-schema-registry'
-  chart_vars_path: '.helm/releases/avro-schema-registry/dqa.yaml'
+  chart_repo_path: 'dollarshaveclub/ecommerce-helm-charts@master:charts/avro-schema-registry'
+  chart_vars_repo_path: 'dollarshaveclub/ecommerce-helm-charts@master:releases/kube.shave.io/avro-schema-registry/dqa.yaml'
   image: 'quay.io/dollarshaveclub/avro-schema-registry'
   value_overrides:
 #   - "dqaIngress.enabled=true"  # to enable on DQAs
@@ -14,8 +14,8 @@ application:
 dependencies:
   direct:
     - name: avro-schema-registry-postgres
-      chart_path: '.helm/charts/avro-schema-registry-postgres'
-      chart_vars_path: '.helm/releases/avro-schema-registry-postgres/dqa.yaml'
+      chart_repo_path: 'dollarshaveclub/ecommerce-helm-charts@master:charts/avro-schema-registry-postgres'
+      chart_vars_repo_path: 'dollarshaveclub/ecommerce-helm-charts@master:releases/kube.shave.io/avro-schema-registry-postgres/dqa.yaml'
   environment:
 
 notifications:
