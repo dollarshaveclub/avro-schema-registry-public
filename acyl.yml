@@ -8,8 +8,8 @@ application:
   chart_vars_repo_path: 'dollarshaveclub/ecommerce-helm-charts@helm3:releases/kube.shave.io/avro-schema-registry/dqa.yaml'
   image: 'quay.io/dollarshaveclub/avro-schema-registry'
   value_overrides:
-#   - "dqaIngress.enabled=true"  # to enable on DQAs
-#   - "envoy.enabled=true"       # to enable on DQAs
+   - "dqaIngress.enabled=true"  # to enable on DQAs
+   - "envoy.enabled=true"       # to enable on DQAs
 
 dependencies:
   direct:
