@@ -25,6 +25,7 @@ end
 group :production do
   gem 'rollbar'
   gem 'bugsnag'
+  gem 'ddtrace'
 end
 
 group :development do
