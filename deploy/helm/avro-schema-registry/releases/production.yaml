@@ -9,8 +9,8 @@ ingress:
   enabled: true
   classname: data-ingress
   hosts:
-    - avro-schema-registry-prd.shave.io
-    - avro-schema-registry-prd-read-only.shave.io
+    - avro-schema-registry-2-prd.shave.io
+    - avro-schema-registry-2-prd-read-only.shave.io
   labels:
     app.kubernetes.io/managed-by: "Helm"
   annotations:
@@ -22,7 +22,7 @@ ingress:
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/subnets: subnet-2d1a7645, subnet-d71970bf, subnet-f1197099
     alb.ingress.kubernetes.io/target-type: instance
-    external-dns.alpha.kubernetes.io/hostname: avro-schema-registry-prd.shave.io, avro-schema-registry-prd-read-only.shave.io
+    external-dns.alpha.kubernetes.io/hostname: avro-schema-registry-2-prd.shave.io, avro-schema-registry-prd-2-read-only.shave.io
 
 app:
   secretsEnv: production

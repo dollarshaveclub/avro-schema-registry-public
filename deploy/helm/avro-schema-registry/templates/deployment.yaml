@@ -24,26 +24,15 @@ spec:
       dnsPolicy: {{ .Values.dnsPolicy }}
       dnsConfig:
 {{ toYaml .Values.dnsConfig | indent 8 }}
-<<<<<<< Updated upstream
-=======
-    {{- with .Values.image.pullSecrets }}
-      imagePullSecrets:
-{{ toYaml . | indent 8 }}
-    {{- end }}
->>>>>>> Stashed changes
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: "{{ .Values.image.pullPolicy }}"
-<<<<<<< Updated upstream
-=======
           command: ["rails", "server", "-b", "0.0.0.0", "-p", "3000"]
->>>>>>> Stashed changes
           ports:
             - containerPort: {{ .Values.service.internalPort }}
               protocol: TCP
           env:
-<<<<<<< Updated upstream
             - name: RACK_ENV
               value: {{ .Values.app.railsEnv | quote }}
             - name: RAILS_ENV
@@ -85,29 +74,10 @@ spec:
                 secretKeyRef:
                   name: {{ printf "es.%s-aws-sm-ss" (include "fullname" .) }}
                   key: db_url
-=======
             - name: STATSD_HOST
               value: {{ .Values.app.statsdHost | quote }}
             - name: STATSD_PORT
               value: {{ .Values.app.statsdPort | quote }}
-            - name: RAILS_LOG_TO_STDOUT
-              value: {{ .Values.app.railsLogStdOut | quote }}
-            - name: RAILS_ENV
-              value: {{ .Values.app.env | quote }}
-            - name: VAULT_ROLE
-              value: {{ .Values.app.role | quote }}
-            - name: VAULT_ADDR
-              value: {{ .Values.app.vaultAddr | quote }}
-{{- if .Values.app.vaultToken }}
-            - name: VAULT_TOKEN
-              value: {{ .Values.app.vaultToken | quote }}
-{{- end }}
-            - name: VAULT_K8S_AUTH_URL_PREFIX
-              value: {{ .Values.app.vaultK8sAuthUrlPrefix | quote }}
-            - name: VAULT_SECRET_PREFIX
-              value: {{ .Values.app.vaultSecretPrefix | quote }}
-            - name: VAULT_TOKEN_PATH
-              value: {{ .Values.app.vaultTokenPath | quote }}
             - name: AVRO_SCHEMA_REGISTRY_URL
               value: {{ .Values.app.avroSchemaRegistryUrl | quote }}
             - name: CANONICAL_SHIPMENTS_TOPIC
@@ -126,8 +96,6 @@ spec:
               value: {{ .Values.app.databaseConcurrency | quote }}
             - name: TOOLBELT_PUBLIC_KEY_URI
               value: {{ .Values.app.toolbeltPublicKeyURI | quote }}
-            - name: SECRET_KEY_BASE
-              value: {{ .Values.app.secretKeyBase | quote }}
             - name: MYSQL_DB_NAME
               valueFrom:
                 secretKeyRef:
@@ -153,16 +121,12 @@ spec:
                 secretKeyRef:
                   name: {{ printf "es.%s-aws-sm-ss" (include "fullname" .) }}
                   key: db_username
->>>>>>> Stashed changes
             - name: SECRET_KEY_BASE
               valueFrom:
                 secretKeyRef:
                   name: {{ printf "es.%s-aws-sm-ss" (include "fullname" .) }}
                   key: secret_key_base
-<<<<<<< Updated upstream
-=======
 
->>>>>>> Stashed changes
           livenessProbe:
             initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
             timeoutSeconds: {{  .Values.livenessProbe.timeoutSeconds }}
@@ -183,7 +147,6 @@ spec:
               port: {{ .Values.service.internalPort }}
           resources:
 {{ toYaml .Values.resources | indent 12 }}
-<<<<<<< Updated upstream
 {{- if .Values.volumes }}
       volumes:
 {{ toYaml .Values.volumes | indent 8 }}
@@ -200,13 +163,4 @@ spec:
       tolerations:
 {{- toYaml . | nindent 8 }}
 {{- end }}
-=======
-    {{- if .Values.volumes }}
-      volumes:
-{{ toYaml .Values.volumes | indent 8 }}
-    {{- end }}
-    {{- if .Values.nodeSelector }}
-      nodeSelector:
-{{ toYaml .Values.nodeSelector | indent 8 }}
-    {{- end }}
->>>>>>> Stashed changes
+
