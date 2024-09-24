@@ -1,0 +1,66 @@
+<<<<<<< Updated upstream
+replicaCount: 2
+
+image:
+  tag: test
+
+createServiceAccount: true
+
+ingress:
+  enabled: true
+  classname: data-ingress
+  hosts:
+    - avro-schema-registry-prd.shave.io
+    - avro-schema-registry-prd-read-only.shave.io
+  labels:
+    app.kubernetes.io/managed-by: "Helm"
+  annotations:
+    alb.ingress.kubernetes.io/certificate-arn: >-
+      arn:aws:acm:us-west-2:932427637498:certificate/16363125-98cd-4d67-bcbd-75fc5e582702
+    alb.ingress.kubernetes.io/healthcheck-path: /
+    alb.ingress.kubernetes.io/healthcheck-port: '8081'
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/subnets: subnet-2d1a7645, subnet-d71970bf, subnet-f1197099
+    alb.ingress.kubernetes.io/target-type: instance
+    external-dns.alpha.kubernetes.io/hostname: avro-schema-registry-prd.shave.io, avro-schema-registry-prd-read-only.shave.io
+
+app:
+  secretsEnv: production
+  env: production
+  secretName: avro-schema-registry-production
+  fingerprintVersion: 2
+  disableSchemaRegistration: true
+  rollbarAccessToken: a23ebbb61591471bbcf43e413b1d89ad
+  ddTraceAnalyticsEnabled: false
+  ddTraceEnabled: false
+
+
+envoy:
+  enabled: true
+=======
+replicaCount: 3
+
+createServiceAccount: true
+
+image:
+  repository: 932427637498.dkr.ecr.us-west-2.amazonaws.com/arm-monolith
+  tag: 468cda9ea34c3e0c18db2d601bbdadc1cef82c1d
+  
+app:
+  env: production
+  secretsEnv: production
+  role: arm-monolith-production
+  canonicalShipmentsTopic: dsc_production_shipments
+  redisURL: redis://arm-data-prod.bjwydx.ng.0001.usw2.cache.amazonaws.com:6379/0
+  sidekiqRedisURL: redis://arm-sidekiq-prod.bjwydx.ng.0001.usw2.cache.amazonaws.com:6379/0
+  toolbeltPublicKeyURI: http://toolbelt-proxy.dev-toolbelt-proxy.svc.cluster.local:5551/publickey
+
+resources:
+  requests:
+    cpu: "10m"
+    memory: "256Mi"
+  limits:
+    cpu: "2000m"
+    memory: "2560Mi"
+>>>>>>> Stashed changes
