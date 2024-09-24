@@ -1,30 +1,35 @@
+# frozen_string_literal: true
+
 desc 'Import schemas from another registry, preserving IDs, subjects, and versions'
 task import_schemas: :environment do
   raise 'REGISTRY_URL must be specified' unless ENV['REGISTRY_URL']
+
   require 'avro_turf'
   require 'avro_turf/confluent_schema_registry'
 
   # Monkey-patch Schema model to allow for storing schemas that were
   # accepted by the Confluent schema registry, but cannot be parsed
   # with the Ruby version of the Avro library.
-  require File.expand_path(File.dirname(__FILE__) + "/../../config/environment")
-  Schema # Touch this so it autoloads before we patch it.
+  # (Touch this so it autoloads before we patch it.)
+  require File.expand_path("#{File.dirname(__FILE__)}/../../config/environment")
+  # rubocop:disable Lint/ConstantDefinitionInBlock
   class Schema
     private
+
     def generate_fingerprints
       self.fingerprint = Schemas::FingerprintGenerator.generate_v1(json)
-  
+
       self.fingerprint2 = Schemas::FingerprintGenerator.generate_v2(json) if Schemas::FingerprintGenerator.include_v2?
-    
     rescue SchemaRegistry::InvalidAvroSchemaError
       self.fingerprint = SecureRandom.uuid
-  
+
       self.fingerprint2 = SecureRandom.uuid
     end
   end
-  
+  # rubocop:enable Lint/ConstantDefinitionInBlock
+
   notes = []
-  
+
   logger = Logger.new($stdout)
   logger.level = Logger::ERROR
   registry = AvroTurf::ConfluentSchemaRegistry.new(ENV['REGISTRY_URL'], logger: logger)
@@ -33,9 +38,9 @@ task import_schemas: :environment do
     registry.subject_versions(subject).each do |version|
       response = registry.subject_version(subject, version)
       puts "#{response['subject']} Version: #{response['version']} Schema ID: #{response['id']}"
-      
+
       # Create the schema at this specific ID unless it already exists
-      schema = Schema.find_by_id(response['id'])
+      schema = Schema.find_by(id: response['id'])
       real_schema = schema
       if schema.nil?
         schema = Schema.new(id: response['id'], json: response['schema'])
@@ -43,7 +48,7 @@ task import_schemas: :environment do
           schema.save!
           real_schema = schema
           puts "Registered schema ID: #{schema.id}"
-        rescue ActiveRecord::RecordNotUnique => e
+        rescue ActiveRecord::RecordNotUnique
           # Official Confluent schema registry can have the same exact schema
           # registered under multiple different IDs. Salsify registry enforces
           # a unique constraint on the schema's fingerprint.
@@ -57,29 +62,26 @@ task import_schemas: :environment do
           # by its given ID, but we won't be using the additional copies of the
           # schema in subject versions.
 
-          real_schema = Schema.find_by_fingerprint2(schema.fingerprint2)
-          if real_schema.nil?
-            raise "Unable to find other copy of schema with fingerprint #{schema.fingerprint2}"
-          end
-          
-          if real_schema.json != schema.json
-            raise "Fingerprint2 matches another schema, but JSON text is different!"
-          end
-          
-          notes << "Remapped [#{response['subject']}] version #{response['version']} from schema #{response['id']} to #{real_schema.id}"
-          
-          schema.fingerprint2 = schema.fingerprint2 + ' ' + SecureRandom.uuid
+          real_schema = Schema.find_by(fingerprint2: schema.fingerprint2)
+          raise "Unable to find other copy of schema with fingerprint #{schema.fingerprint2}" if real_schema.nil?
+
+          raise 'Fingerprint2 matches another schema, but JSON text is different!' if real_schema.json != schema.json
+
+          notes << "Remapped [#{response['subject']}] version #{response['version']} from " \
+            "schema #{response['id']} to #{real_schema.id}"
+
+          schema.fingerprint2 = "#{schema.fingerprint2} #{SecureRandom.uuid}"
           Schema.skip_callback(:save, :before, :generate_fingerprints)
           schema.save!
           Schema.set_callback(:save, :before, :generate_fingerprints)
         end
       end
-      
+
       # Create this subject unless it already exists
-      sub = Subject.find_by_name(response['subject'])
+      sub = Subject.find_by(name: response['subject'])
       if sub.nil?
         sub = Subject.create!(name: response['subject'])
-        puts "  - Registered new subject"
+        puts '  - Registered new subject'
       end
 
       # Link up this subject version to the schema.
@@ -87,7 +89,7 @@ task import_schemas: :environment do
         ver = sub.versions.create!(version: response['version'], schema: real_schema)
         puts "  - Linked subject version #{ver.version} to schema ID #{real_schema.id}"
       end
-      
+
       puts
       puts
     end

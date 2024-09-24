@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 if ENV.key?('ROLLBAR_ACCESS_TOKEN')
   if defined? Rollbar
     Rollbar.configure do |config|
@@ -7,9 +9,7 @@ if ENV.key?('ROLLBAR_ACCESS_TOKEN')
       config.access_token = ENV['ROLLBAR_ACCESS_TOKEN']
 
       # Here we'll disable in 'test':
-      if Rails.env.test?
-        config.enabled = false
-      end
+      config.enabled = false if Rails.env.test?
 
       config.use_thread
 
@@ -74,6 +74,6 @@ if ENV.key?('ROLLBAR_ACCESS_TOKEN')
       config.environment = ENV['ROLLBAR_ENV'].presence || Rails.env
     end
   else
-    puts 'ROLLBAR_ACCESS_TOKEN defined, but rollbar gem not loaded!'
+    Rails.logger.debug 'ROLLBAR_ACCESS_TOKEN defined, but rollbar gem not loaded!'
   end
 end

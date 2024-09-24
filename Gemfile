@@ -6,13 +6,13 @@ source 'https://rubygems.org'
 
 gem 'avro', '~> 1.10.0'
 gem 'avro-resolution_canonical_form', '>= 0.2.0'
+gem 'avro_turf', '>= 0.8.0', require: false
 gem 'bootsnap', require: false
 gem 'grape'
 gem 'pg'
 gem 'private_attr', require: 'private_attr/everywhere'
 gem 'puma', '>= 5.6.7'
 gem 'rails', '~> 7.0.0'
-gem 'avro_turf', '>= 0.8.0', require: false
 
 group :test do
   gem 'json_spec'
@@ -23,9 +23,9 @@ group :test do
 end
 
 group :production do
-  gem 'rollbar'
   gem 'bugsnag'
   gem 'ddtrace'
+  gem 'rollbar'
 end
 
 group :development do
