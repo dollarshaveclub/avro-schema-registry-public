@@ -10,8 +10,11 @@ task import_schemas: :environment do
   # Monkey-patch Schema model to allow for storing schemas that were
   # accepted by the Confluent schema registry, but cannot be parsed
   # with the Ruby version of the Avro library.
-  # (Touch this so it autoloads before we patch it.)
   require File.expand_path("#{File.dirname(__FILE__)}/../../config/environment")
+  # rubocop:disable Lint/Void
+  Schema # (Touch this so it autoloads before we patch it.)
+  # rubocop:enable Lint/Void
+
   # rubocop:disable Lint/ConstantDefinitionInBlock
   class Schema
     private
