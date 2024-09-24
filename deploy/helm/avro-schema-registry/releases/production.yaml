@@ -1,4 +1,3 @@
-<<<<<<< Updated upstream
 replicaCount: 2
 
 image:
@@ -34,33 +33,3 @@ app:
   rollbarAccessToken: a23ebbb61591471bbcf43e413b1d89ad
   ddTraceAnalyticsEnabled: false
   ddTraceEnabled: false
-
-
-envoy:
-  enabled: true
-=======
-replicaCount: 3
-
-createServiceAccount: true
-
-image:
-  repository: 932427637498.dkr.ecr.us-west-2.amazonaws.com/arm-monolith
-  tag: 468cda9ea34c3e0c18db2d601bbdadc1cef82c1d
-  
-app:
-  env: production
-  secretsEnv: production
-  role: arm-monolith-production
-  canonicalShipmentsTopic: dsc_production_shipments
-  redisURL: redis://arm-data-prod.bjwydx.ng.0001.usw2.cache.amazonaws.com:6379/0
-  sidekiqRedisURL: redis://arm-sidekiq-prod.bjwydx.ng.0001.usw2.cache.amazonaws.com:6379/0
-  toolbeltPublicKeyURI: http://toolbelt-proxy.dev-toolbelt-proxy.svc.cluster.local:5551/publickey
-
-resources:
-  requests:
-    cpu: "10m"
-    memory: "256Mi"
-  limits:
-    cpu: "2000m"
-    memory: "2560Mi"
->>>>>>> Stashed changes
