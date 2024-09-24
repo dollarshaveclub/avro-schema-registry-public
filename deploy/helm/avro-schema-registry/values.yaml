@@ -1,0 +1,148 @@
+# Default values for avro-schema-registry.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: 932427637498.dkr.ecr.us-west-2.amazonaws.com/avro-schema-registry
+  tag: master
+  pullPolicy: Always
+<<<<<<< Updated upstream
+=======
+  pullSecrets:
+   - name: dollarshaveclub-kubernetes-pull-secret
+>>>>>>> Stashed changes
+
+nameOverride: ""
+fullnameOverride: ""
+
+service:
+  name: avro-schema-registry
+  type: ClusterIP
+  externalPort: 8081
+  internalPort: 8081
+
+restartPolicy: OnFailure
+createServiceAccount: false
+createSecret: false
+
+ingress:
+  enabled: false
+<<<<<<< Updated upstream
+  class: alb
+  hosts:
+    - host: schemaregistry.example.local
+      paths: [ ]
+  annotations:
+    ingress.kubernetes.io/force-ssl-redirect: "true"
+=======
+  classname: nginx
+  hosts:
+  annotations:
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+  hosts:
+    - host: schemaregistry.example.local
+      paths: []
+
+dqaIngress:
+  enabled: false
+>>>>>>> Stashed changes
+
+dnsPolicy: ClusterFirst
+dnsConfig: {}
+#  options:
+#    - name: ndots
+#      value: '2'
+#    - name: attempts
+#      value: '5'
+#    - name: timeout
+#      value: '1'
+
+app:
+  env: development
+<<<<<<< Updated upstream
+  secretsEnv: development
+=======
+>>>>>>> Stashed changes
+  secretName: ''
+  railsEnv: production # use production for all environments
+  railsLogToStdOut: true
+  dbURL: postgresql://root:root@postgres:5432/avro-schema-registry_development
+  dbPool: 25
+  dbDisableEnvCheck: 0
+  runMigration: false
+  forceSSL: false
+  secretKeyBase: ac4e76bc1a5fdd3ab0d19dd205029da31adebed83df2fc01
+  disablePWD: true
+  railsServeStaticFiles: true
+  allowResponseCaching: true
+  defaultCompatibility: BACKWARD
+  webWorkerProcesses: 4
+  maxWebThreads: 25
+<<<<<<< Updated upstream
+  rollbarAccessToken: ''
+  ddAPMServiceName: avro-schema-registry
+  ddTraceAnalyticsEnabled: false
+  ddTraceEnabled: false
+  ddTracerHostname: datadog-agent.default.svc.cluster.local
+=======
+  vaultAddr: http://vault:8200
+  vaultRole: ''
+  vaultK8sAuthUrlPrefix: kubernetes
+  vaultTokenPath: /var/run/secrets/kubernetes.io/serviceaccount/token
+  vaultPathPrefix: secret/services/avro-schema-registry/
+  rollbarAccessToken: ''
+  ddAPMServiceName: avro-schema-registry
+  ddTraceAnalyticsEnabled: false
+  ddTracerHostname: datadog.tools.svc.cluster.local
+>>>>>>> Stashed changes
+  ddTracerPort: 8126
+
+job:
+  activeDeadlineSeconds: 600
+
+<<<<<<< Updated upstream
+=======
+envoy:
+  name: envoy-sidecar
+  defaultHostHTTP10: avro-schema-registry
+  enabled: false
+  image:
+    repo: envoyproxy/envoy
+    tag: v1.12.3
+  internalAdminPort: 9091
+  internalProxyPort: 10000
+
+>>>>>>> Stashed changes
+livenessProbe:
+  initialDelaySeconds: 300
+  timeoutSeconds: 5
+  periodSeconds: 10
+  successThreshold: 1
+  failureThreshold: 3
+  httpGet:
+    path: '/'
+
+readinessProbe:
+  initialDelaySeconds: 20
+  timeoutSeconds: 5
+  periodSeconds: 10
+  successThreshold: 1
+  failureThreshold: 3
+  httpGet:
+    path: '/'
+
+resources: {} # remove and uncomment limits, updating with desired settings
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

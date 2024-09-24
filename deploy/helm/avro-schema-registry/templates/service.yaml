@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.service.name }}
+  labels:
+<<<<<<< Updated upstream
+    app: {{ template "fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+=======
+{{ include "labels" . | indent 4 }}
+>>>>>>> Stashed changes
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.externalPort }}
+<<<<<<< Updated upstream
+      targetPort: {{ .Values.service.internalPort }}
+      protocol: TCP
+      name: {{ .Values.service.name }}
+  selector:
+    app: {{ template "fullname" . }}
+=======
+{{- if  .Values.envoy.enabled }}
+      name: {{ .Values.envoy.name }}
+      targetPort: {{ .Values.envoy.internalProxyPort }}
+      protocol: TCP
+{{- else }}
+      name: {{ .Chart.Name }}
+      targetPort: {{ .Values.service.internalPort }}
+      protocol: TCP
+{{- end }}
+{{- if eq .Values.service.type "NodePort" }}
+      nodePort: {{ .Values.service.nodePort }}
+{{- end }}
+  selector:
+    app: {{ template "name" . }}
+>>>>>>> Stashed changes

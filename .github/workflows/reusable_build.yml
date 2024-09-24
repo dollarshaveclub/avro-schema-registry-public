@@ -1,0 +1,29 @@
+name: Reusable workflow for Build and push to ECR
+
+on:
+  workflow_dispatch:
+    inputs:
+      ecr:
+        required: true
+        description: "Aws account string for the ECR"
+        default: 932427637498.dkr.ecr.us-west-2.amazonaws.com
+        type: string
+      ecr_repo_name:
+        required: true
+        description: "Name of the ECR repo "
+        type: string
+      dockerfile:
+        required: false
+        description: "Path to Dockerfile"
+        type: string
+
+jobs:
+  build:
+    uses: dollarshaveclub/dsc-github-actions/.github/workflows/build.yml@main
+    with:
+      ecr: ${{ inputs.ecr }}
+      ecr_repo_name: ${{ inputs.ecr_repo_name }}
+      dockerfile: ${{ inputs.dockerfile }}
+    secrets:
+     AWS_ECR_ACCESS_KEY_TEST: ${{ secrets.AWS_ECR_ACCESS }}
+     AWS_ECR_ACCESS_SECRET_TEST: ${{ secrets.AWS_ECR_SECRET }}

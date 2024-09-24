@@ -1,0 +1,57 @@
+name: Reusable workflow for Deployment to Kubernetes
+
+on:
+  workflow_dispatch:
+    inputs:
+      ecr:
+        required: true
+        description: "Aws account string for the ECR"
+        default: 932427637498.dkr.ecr.us-west-2.amazonaws.com
+        type: string
+      ecr_repo_name:
+        required: true
+        description: "Name of the ECR repo "
+        type: string
+      ecr_tag:
+        required: false
+        description: "Tag for docker image"
+        type: string
+      chart_path:
+        required: false
+        description: "Path to helm charts"
+        type: string
+      release_name:
+        required: false
+        description: "Helm release name"
+        type: string
+      namespace:
+        required: false
+        description: "Kubernetes namespace name"
+        type: string
+      release_path:
+        required: false
+        description: "Path to release file"
+        type: string
+      runner:
+        description: 'The runner to use for this job'
+        required: true
+        type: string
+        default: 'arc-runner-63'
+
+jobs:
+  Deploy:
+    uses: dollarshaveclub/dsc-github-actions/.github/workflows/deploy.yml@main
+    with:
+      ecr: ${{ inputs.ecr }}
+      ecr_repo_name: ${{ inputs.ecr_repo_name }}
+      ecr_tag: ${{ inputs.ecr_tag }}
+      chart_path: ${{ inputs.chart_path }}
+      release_name: ${{ inputs.release_name }}
+      namespace: ${{ inputs.namespace }}
+      release_path: ${{ inputs.release_path }}
+      runner: ${{ inputs.runner }}
+    secrets:
+      AWS_ECR_ACCESS_KEY_TEST: ${{ secrets.AWS_ECR_ACCESS }}
+      AWS_ECR_ACCESS_SECRET_TEST: ${{ secrets.AWS_ECR_SECRET }}
+      KUBECONFIG_63: ${{ secrets.KUBECONFIG_63 }}
+      KUBECONFIG_APPLE: ${{ secrets.KUBECONFIG_APPLE }}
