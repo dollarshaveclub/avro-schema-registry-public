@@ -11,26 +11,32 @@ on:
       ecr_repo_name:
         required: true
         description: "Name of the ECR repo "
+        default: avro-schema-registry
         type: string
       dockerfile:
         required: false
         description: "Path to Dockerfile"
+        default: /Dockerfile
         type: string
       chart_path:
         required: false
         description: "Path to helm charts"
+        default: deploy/helm/avro-schema-registry
         type: string
       release_name:
         required: false
         description: "Helm release name"
+        default: prd-avro-schema-registry
         type: string
       namespace:
         required: false
         description: "Kubernetes namespace name"
+        default: prd-avro-schema-registry
         type: string
       release_path:
         required: false
         description: "Path to release file"
+        default: deploy/helm/avro-schema-registry/releases/production.yaml
         type: string
       runner:
         description: 'The runner to use for this job'
