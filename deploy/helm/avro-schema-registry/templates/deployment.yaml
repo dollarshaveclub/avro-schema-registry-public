@@ -20,7 +20,6 @@ spec:
         app: {{ template "fullname" . }}
         release: {{ .Release.Name }}
     spec:
-      serviceAccountName: {{ .Values.app.role }}
       dnsPolicy: {{ .Values.dnsPolicy }}
       dnsConfig:
 {{ toYaml .Values.dnsConfig | indent 8 }}
@@ -96,31 +95,6 @@ spec:
               value: {{ .Values.app.databaseConcurrency | quote }}
             - name: TOOLBELT_PUBLIC_KEY_URI
               value: {{ .Values.app.toolbeltPublicKeyURI | quote }}
-            - name: MYSQL_DB_NAME
-              valueFrom:
-                secretKeyRef:
-                  name: {{ printf "es.%s-aws-sm-ss" (include "fullname" .) }}
-                  key: db_name
-            - name: MYSQL_HOSTNAME
-              valueFrom:
-                secretKeyRef:
-                  name: {{ printf "es.%s-aws-sm-ss" (include "fullname" .) }}
-                  key: db_hostname
-            - name: MYSQL_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: {{ printf "es.%s-aws-sm-ss" (include "fullname" .) }}
-                  key: db_password
-            - name: MYSQL_PORT
-              valueFrom:
-                secretKeyRef:
-                  name: {{ printf "es.%s-aws-sm-ss" (include "fullname" .) }}
-                  key: db_port
-            - name: MYSQL_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  name: {{ printf "es.%s-aws-sm-ss" (include "fullname" .) }}
-                  key: db_username
             - name: SECRET_KEY_BASE
               valueFrom:
                 secretKeyRef:

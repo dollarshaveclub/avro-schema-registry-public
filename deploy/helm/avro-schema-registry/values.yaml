@@ -11,12 +11,11 @@ image:
 
 service:
   name: avro-schema-registry
-  type: ClusterIP
+  type: NodePort
   externalPort: 8081
-  internalPort: 8081
+  internalPort: 3000
 
 restartPolicy: OnFailure
-createServiceAccount: false
 createSecret: false
 
 ingress:
@@ -59,6 +58,7 @@ app:
   ddTraceAnalyticsEnabled: false
   ddTracerHostname: datadog-agent.default.svc.cluster.local
   ddTracerPort: 8126
+  logLevel: INFO
 
 job:
   activeDeadlineSeconds: 600

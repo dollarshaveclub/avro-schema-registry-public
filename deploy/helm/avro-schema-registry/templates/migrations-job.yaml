@@ -17,7 +17,6 @@ spec:
       labels:
         chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
     spec:
-      serviceAccountName: {{ .Values.app.vaultRole }}
       restartPolicy: {{ .Values.restartPolicy }}
     {{- with .Values.image.pullSecrets }}
       imagePullSecrets:

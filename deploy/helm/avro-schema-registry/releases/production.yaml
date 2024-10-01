@@ -1,13 +1,10 @@
 replicaCount: 2
 
 image:
-  tag: test
-
-createServiceAccount: true
+  tag: brian-test
 
 ingress:
   enabled: true
-  classname: data-ingress
   hosts:
     - avro-schema-registry-2-prd.shave.io
     - avro-schema-registry-2-prd-read-only.shave.io
@@ -17,8 +14,8 @@ ingress:
     alb.ingress.kubernetes.io/certificate-arn: >-
       arn:aws:acm:us-west-2:932427637498:certificate/16363125-98cd-4d67-bcbd-75fc5e582702
     alb.ingress.kubernetes.io/healthcheck-path: /
-    alb.ingress.kubernetes.io/healthcheck-port: '8081'
-    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'
+    alb.ingress.kubernetes.io/healthcheck-port: traffic-port
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80},{"HTTPS": 443}]'
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/subnets: subnet-2d1a7645, subnet-d71970bf, subnet-f1197099
     alb.ingress.kubernetes.io/target-type: instance
