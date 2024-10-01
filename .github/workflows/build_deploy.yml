@@ -55,7 +55,7 @@ jobs:
      AWS_ECR_ACCESS_KEY_TEST: ${{ secrets.AWS_ECR_ACCESS }}
      AWS_ECR_ACCESS_SECRET_TEST: ${{ secrets.AWS_ECR_SECRET }}
   Deploy:
-    needs: build
+    needs: Build
     uses: dollarshaveclub/dsc-github-actions/.github/workflows/deploy.yml@main
     with:
       ecr: ${{ inputs.ecr }}
