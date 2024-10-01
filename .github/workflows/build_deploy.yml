@@ -1,4 +1,4 @@
-name: Reusable workflow for Build and Deploy to Kubernetes
+name: Build and Deploy to Kubernetes
 
 on:
   workflow_dispatch:

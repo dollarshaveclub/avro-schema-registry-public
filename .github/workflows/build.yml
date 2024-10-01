@@ -1,4 +1,4 @@
-name: Reusable workflow for Build and push to ECR
+name: Build and Push to ECR
 
 on:
   workflow_dispatch:
