@@ -45,7 +45,7 @@ on:
         default: 'arc-runner-63'
 
 jobs:
-  build:
+  Build:
     uses: dollarshaveclub/dsc-github-actions/.github/workflows/build.yml@main
     with:
       ecr: ${{ inputs.ecr }}
@@ -56,7 +56,7 @@ jobs:
      AWS_ECR_ACCESS_SECRET_TEST: ${{ secrets.AWS_ECR_SECRET }}
   Deploy:
     needs: build
-    uses: dollarshaveclub/dsc-github-actions/.github/workflows/build-deploy.yml@main
+    uses: dollarshaveclub/dsc-github-actions/.github/workflows/deploy.yml@main
     with:
       ecr: ${{ inputs.ecr }}
       ecr_repo_name: ${{ inputs.ecr_repo_name }}
